@@ -8,67 +8,98 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet">
   
   <style>
-    :root {
-      --primary: #F7931A; --bg: #222; 
-    }
+    :root { --primary: #F7931A; --bg: #222; }
     body {
       margin: 0; padding: 0; background-color: var(--bg); color: white;
       font-family: 'Noto Sans JP', sans-serif; display: flex; flex-direction: column;
       align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; touch-action: none;
     }
     
-    .lang-selector { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); z-index: 100; }
-    select.lang-select { background: #000; color: #fff; border: 1px solid var(--primary); padding: 5px 10px; border-radius: 5px; font-family: 'Press Start 2P', cursive; font-size: 10px; cursor: pointer; }
-
-    /* --- メインコンテナ --- */
-    #app-container {
-      width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative;
+    /* スマホ縦画面時の警告オーバーレイ */
+    #rotate-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.95); z-index: 10000; color: #fff;
+      flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; font-family: 'Press Start 2P', cursive; line-height: 1.5;
+    }
+    @media (max-width: 800px) and (orientation: portrait) {
+      #rotate-overlay { display: flex; }
+      #app-container { display: none !important; }
     }
 
-    /* --- UIパネル --- */
+    #app-container {
+      width: 100%; max-width: 800px; display: flex; flex-direction: column; 
+      align-items: center; justify-content: center; height: 100vh; position: relative;
+    }
+
+    .lang-selector { position: absolute; top: 15px; right: 15px; z-index: 100; }
+    select.lang-select { background: #000; color: #fff; border: 1px solid var(--primary); padding: 5px 10px; border-radius: 5px; font-family: 'Press Start 2P', cursive; font-size: 10px; cursor: pointer; }
+
+    /* UIパネル */
     .panel {
       background: rgba(0, 0, 0, 0.85); border: 3px solid var(--primary); border-radius: 12px;
       padding: 30px 20px; text-align: center; box-shadow: 0 0 20px rgba(247, 147, 26, 0.5);
-      width: 90%; max-width: 400px; position: absolute; z-index: 10;
+      width: 90%; max-width: 420px; position: absolute; z-index: 10; max-height: 90vh; overflow-y: auto;
     }
 
     .title { font-family: 'Press Start 2P', cursive; font-size: 1.5rem; color: var(--primary); margin-bottom: 15px; line-height: 1.5; text-shadow: 2px 2px 0px #000; }
-    .desc { font-size: 0.85rem; margin-bottom: 25px; line-height: 1.8; color: #ddd; font-weight: bold;}
+    .desc { font-size: 0.85rem; margin-bottom: 15px; line-height: 1.8; color: #ddd; font-weight: bold;}
     
     .btn {
-      background: var(--primary); color: #000; border: none; padding: 15px 20px; width: 100%;
+      background: var(--primary); color: #000; border: none; padding: 15px 10px; width: 100%;
       border-radius: 8px; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 10px;
       box-shadow: 0 4px 0 #C47F00; transition: 0.1s; margin-bottom: 10px;
     }
     .btn:active { transform: translateY(4px); box-shadow: none; }
     .btn-secondary { background: #333; color: #fff; box-shadow: 0 4px 0 #111; border: 1px solid #555;}
     .btn-free { background: #00FF88; color: #000; box-shadow: 0 4px 0 #009955; }
+    .btn-gold { background: #FFD700; color: #000; box-shadow: 0 4px 0 #C4A000; }
 
-    /* --- ゲームキャンバス --- */
+    .qr-img { width: 180px; height: 180px; border: 4px solid #fff; border-radius: 8px; margin: 10px auto; display: block; }
+    .inv-text { width: 100%; padding: 10px; background: #000; color: #00FF88; border: 1px solid #333; border-radius: 5px; font-family: monospace; font-size: 10px; margin-bottom: 15px; word-break: break-all; resize: none; }
+
+    /* ゲームキャンバス (比率固定でCSSでレスポンシブ化) */
     canvas {
       display: none; background: #5CB8FF; border: 4px solid #fff;
-      border-radius: 8px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); width: 95%; max-width: 800px;
+      border-radius: 8px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); 
+      width: 100%; max-width: 800px; height: auto; aspect-ratio: 800 / 360;
       image-rendering: pixelated;
     }
   </style>
 </head>
 <body>
 
-  <div class="lang-selector">
-    <select class="lang-select" onchange="changeLang(this.value)">
-      <option value="ja">🇯🇵 JP</option>
-      <option value="en">🇺🇸 EN</option>
-      <option value="ko">🇰🇷 KO</option>
-    </select>
+  <!-- 横画面推奨オーバーレイ -->
+  <div id="rotate-overlay">
+    <div style="font-size:40px; margin-bottom:20px;">🔄</div>
+    <div>PLEASE ROTATE<br>YOUR DEVICE</div>
+    <div style="font-size:10px; margin-top:10px; color:#aaa;">(Play in Landscape)</div>
   </div>
 
   <div id="app-container">
     
     <!-- トップ画面 -->
     <div class="panel" id="panel-start">
+      <div class="lang-selector" style="position:relative; top:0; right:0; margin-bottom:15px;">
+        <select class="lang-select" onchange="changeLang(this.value)">
+          <option value="ja">🇯🇵 JP</option><option value="en">🇺🇸 EN</option><option value="ko">🇰🇷 KO</option>
+        </select>
+      </div>
+
       <div class="title">BITCOIN<br>RUN 🏃‍♂️</div>
-      <div class="desc" data-i18n="desc">明るい世界を駆け抜けろ！<br>ヴィラン(SBF, GOX, KIM)とFIATの沼を3段ジャンプで回避し、ハイスコアを叩き出せ！</div>
-      <button class="btn btn-free" onclick="startGame()"><span data-i18n="btn_play_free">PLAY FREE (TEST)</span></button>
+      <div class="desc" data-i18n="desc">明るい世界を駆け抜けろ！<br>ヴィランとFIATの沼を3段ジャンプで回避し、無限のハイスコアを叩き出せ！</div>
+      
+      <!-- HOW TO PLAY -->
+      <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; font-size: 10px; line-height: 1.8; color: #ddd; border: 1px solid #333;">
+        <div style="color:var(--primary); font-weight:bold; margin-bottom: 5px; text-align:center;" data-i18n="howto_title">📖 HOW TO PLAY</div>
+        <div data-i18n="howto_1">・画面のどこかをタップでジャンプ</div>
+        <div data-i18n="howto_2">・空中でもう一度タップで3段ジャンプ</div>
+        <div data-i18n="howto_3">・ヴィランとFIATの沼を避けろ！</div>
+        <div data-i18n="howto_4">・⚡を取るとスコアアップ！</div>
+      </div>
+
+      <button class="btn btn-free" onclick="startGame()"><span data-i18n="btn_play_free">PLAY FREE</span></button>
+      <button class="btn btn-secondary" onclick="showLeaderboard()" style="padding:10px;"><span data-i18n="btn_view_lb">📋 VIEW LEADERBOARD</span></button>
     </div>
 
     <!-- ゲーム画面 -->
@@ -77,43 +108,85 @@
     <!-- 結果画面 -->
     <div class="panel" id="panel-result" style="display:none;">
       <div class="title" style="color:#FFF;" data-i18n="gameover">GAME OVER</div>
-      
       <div style="font-size:12px; color:#aaa; margin-bottom:5px; font-family: 'Press Start 2P', cursive;">TIME: <span id="final-time" style="color:#fff;">00:00</span></div>
       <div class="title" style="font-size:1.8rem; margin: 10px 0 20px;" id="final-score">0</div>
       
-      <button class="btn btn-secondary" onclick="shareTwitter()"><span data-i18n="btn_share">🐦 SHARE TO X</span></button>
-      <button class="btn btn-free" onclick="startGame()"><span data-i18n="btn_retry_free">RETRY FREE</span></button>
+      <!-- アクションボタン -->
+      <div id="result-buttons">
+        <button class="btn btn-free" onclick="startGame()"><span data-i18n="btn_retry_free">RETRY FREE</span></button>
+        <button class="btn btn-secondary" onclick="shareTwitter()"><span data-i18n="btn_share">🐦 SHARE TO X</span></button>
+        <button class="btn btn-gold" onclick="openLeaderboardPay()"><span data-i18n="btn_leaderboard">🏆 SAVE SCORE (100 SATS)</span></button>
+        <button class="btn btn-secondary" onclick="showLeaderboard()" style="padding:10px;"><span data-i18n="btn_view_lb">📋 VIEW LEADERBOARD</span></button>
+      </div>
+
+      <!-- 課金用インボイスエリア -->
+      <div id="lb-invoice-area" style="display:none;">
+        <div class="title" style="font-size: 1rem;" data-i18n="pay_to_record">PAY TO RECORD</div>
+        <a id="lb-wallet-link" href="#"><img id="lb-qr" class="qr-img" src=""></a>
+        <textarea class="inv-text" id="lb-inv-text" readonly onclick="copyLbInvoice()"></textarea>
+        <div style="font-size: 10px; color: var(--primary); margin-bottom:10px; animation: blink 1s infinite;" data-i18n="waiting">WAITING FOR PAYMENT...</div>
+        <button class="btn btn-secondary" onclick="cancelLbPay()"><span data-i18n="btn_cancel">CANCEL</span></button>
+      </div>
+
+      <!-- 名前入力エリア (決済後) -->
+      <div id="lb-name-area" style="display:none;">
+        <div class="title" style="font-size: 1rem; color:#00FF88;" data-i18n="payment_success">SUCCESS!</div>
+        <p style="font-size: 10px;" data-i18n="enter_name">Enter your name:</p>
+        <input type="text" id="player-name" maxlength="15" style="width:90%; padding:12px; font-family:'Press Start 2P'; font-size:10px; margin-bottom:15px; text-align:center; border: 2px solid var(--primary); background:#111; color:#fff;">
+        <button class="btn btn-gold" onclick="submitScore()"><span data-i18n="btn_submit">SUBMIT</span></button>
+      </div>
+    </div>
+
+    <!-- リーダーボード画面 -->
+    <div class="panel" id="panel-leaderboard" style="display:none;">
+      <div class="title">🏆 TOP 10 🏆</div>
+      <div id="lb-list" style="text-align: left; font-size: 10px; line-height: 2; margin-bottom: 20px; font-family:'Press Start 2P', cursive;">
+        Loading...
+      </div>
+      <button class="btn btn-secondary" onclick="closeLeaderboard()"><span data-i18n="btn_close">CLOSE</span></button>
     </div>
 
   </div>
 
 <script>
 // ==========================================
-// 画像の読み込み
+// 🚨 設定 (GASのURLを貼り付けてください)
 // ==========================================
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzboWH_kLuM209urovC5SsPA7cSinZvR-OAgB4n0MO8vN97eZW-A23wP2yNf_UNFaev/exec"; 
+const LNBITS_API_URL = "https://demo.lnbits.com/api/v1/payments";
+const LNBITS_INVOICE_KEY = "67e5b0ad270f44d19e6d768bb3314e49"; // 入金確認用なのでクライアントに置いてOK
+
+// 画像
 const imgGox = new Image(); imgGox.src = 'gox.png';
 const imgSbf = new Image(); imgSbf.src = 'sbf.png';
 const imgKim = new Image(); imgKim.src = 'kim.png';
-const imgFiat = new Image(); imgFiat.src = 'FIAT.png'; // FIATの沼画像
+const imgFiat = new Image(); imgFiat.src = 'FIAT.png';
 
-// ==========================================
 // 多言語辞書
-// ==========================================
 const i18n = {
   en: {
     desc: "Run through the bright world!<br>Triple jump to dodge villains and FIAT pits, aiming for an infinite high score!",
-    btn_play_free: "PLAY FREE", gameover: "GAME OVER", 
-    btn_share: "🐦 SHARE TO X", btn_retry_free: "RETRY FREE"
+    howto_title: "📖 HOW TO PLAY", howto_1: "・Tap anywhere to jump", howto_2: "・Triple Jump (Max 3 times)", howto_3: "・Dodge Villains & FIAT pits", howto_4: "・Grab ⚡ to boost score",
+    btn_play_free: "PLAY FREE", gameover: "GAME OVER", btn_share: "🐦 SHARE TO X", btn_retry_free: "RETRY FREE",
+    btn_leaderboard: "🏆 SAVE SCORE (100 SATS)", btn_view_lb: "📋 VIEW LEADERBOARD",
+    pay_to_record: "PAY TO RECORD", waiting: "WAITING FOR PAYMENT...", btn_cancel: "CANCEL", btn_close: "CLOSE",
+    payment_success: "SUCCESS!", enter_name: "Enter your name (Max 15):", btn_submit: "SUBMIT SCORE", alert_copy: "Copied!"
   },
   ja: {
     desc: "明るい世界を駆け抜けろ！<br>ヴィランとFIATの沼を3段ジャンプで回避し、無限のハイスコアを叩き出せ！",
-    btn_play_free: "無料でプレイ", gameover: "ゲームオーバー", 
-    btn_share: "🐦 𝕏でシェア", btn_retry_free: "もう一度プレイ"
+    howto_title: "📖 遊び方", howto_1: "・画面のどこかをタップでジャンプ", howto_2: "・空中でもう一度タップで3段ジャンプ", howto_3: "・ヴィランとFIATの沼を避けろ！", howto_4: "・⚡を取るとスコアアップ！",
+    btn_play_free: "無料でプレイ", gameover: "ゲームオーバー", btn_share: "🐦 𝕏でシェア", btn_retry_free: "もう一度プレイ",
+    btn_leaderboard: "🏆 スコアを記録 (100 SATS)", btn_view_lb: "📋 ランキングを見る",
+    pay_to_record: "100 Satsのお賽銭", waiting: "支払いを確認中...", btn_cancel: "キャンセル", btn_close: "閉じる",
+    payment_success: "支払い完了！", enter_name: "名前を入力してください:", btn_submit: "記録する", alert_copy: "コピーしました！"
   },
   ko: {
     desc: "밝은 세상을 달려보세요!<br>3단 점프로 악당과 FIAT 늪을 피하고 무한 최고 점수에 도전하세요!",
-    btn_play_free: "무료로 플레이", gameover: "게임 오버", 
-    btn_share: "🐦 𝕏에 공유하기", btn_retry_free: "다시 플레이"
+    howto_title: "📖 플레이 방법", howto_1: "・화면을 탭하여 점프", howto_2: "・최대 3단 점프 가능", howto_3: "・악당과 FIAT 늪을 피하세요!", howto_4: "・⚡를 획득하여 점수 올리기",
+    btn_play_free: "무료로 플레이", gameover: "게임 오버", btn_share: "🐦 𝕏에 공유하기", btn_retry_free: "다시 플레이",
+    btn_leaderboard: "🏆 점수 기록 (100 SATS)", btn_view_lb: "📋 랭킹 보기",
+    pay_to_record: "결제하여 기록하기", waiting: "결제 대기 중...", btn_cancel: "취소", btn_close: "닫기",
+    payment_success: "결제 완료!", enter_name: "이름을 입력하세요:", btn_submit: "등록하기", alert_copy: "복사되었습니다!"
   }
 };
 
@@ -126,47 +199,151 @@ function changeLang(lang) {
 }
 
 // ----------------------------------------------------
+// リーダーボード＆決済ロジック
+// ----------------------------------------------------
+let checkPaymentInterval = null;
+let currentHash = "";
+
+function openLeaderboardPay() {
+  document.getElementById('result-buttons').style.display = 'none';
+  document.getElementById('lb-invoice-area').style.display = 'block';
+
+  fetch(LNBITS_API_URL, {
+    method: "POST",
+    headers: { "X-Api-Key": LNBITS_INVOICE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ out: false, amount: 100, memo: `BITCOIN RUN Score: ${Math.floor(score)} 🏃‍♂️` })
+  })
+  .then(res => res.json())
+  .then(data => {
+    currentHash = data.payment_hash;
+    const inv = data.payment_request;
+    
+    document.getElementById('lb-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=lightning:${inv}`;
+    document.getElementById('lb-inv-text').value = inv;
+    document.getElementById('lb-wallet-link').href = `lightning:${inv}`;
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if(isMobile) setTimeout(() => { window.location.href = `lightning:${inv}`; }, 500);
+
+    pollPayment(currentHash);
+  }).catch(e => alert("API Error"));
+}
+
+function pollPayment(hash) {
+  if (checkPaymentInterval) clearInterval(checkPaymentInterval);
+  checkPaymentInterval = setInterval(() => {
+    fetch(`${LNBITS_API_URL}/${hash}`, { headers: { "X-Api-Key": LNBITS_INVOICE_KEY } })
+    .then(res => res.json())
+    .then(data => {
+      if (data.paid) {
+        clearInterval(checkPaymentInterval);
+        document.getElementById('lb-invoice-area').style.display = 'none';
+        document.getElementById('lb-name-area').style.display = 'block';
+      }
+    }).catch(console.error);
+  }, 3000);
+}
+
+function copyLbInvoice() {
+  document.getElementById('lb-inv-text').select(); document.execCommand('copy');
+  alert(i18n[currentLang].alert_copy);
+}
+
+function cancelLbPay() {
+  if(checkPaymentInterval) clearInterval(checkPaymentInterval);
+  document.getElementById('lb-invoice-area').style.display = 'none';
+  document.getElementById('result-buttons').style.display = 'block';
+}
+
+function submitScore() {
+  const name = document.getElementById('player-name').value.trim() || 'Anon';
+  const timeStr = document.getElementById('final-time').innerText;
+  const finalScore = Math.floor(score);
+  
+  const btn = document.querySelector('#lb-name-area button');
+  btn.disabled = true; btn.innerText = "SAVING...";
+
+  fetch(`${GAS_URL}?action=record&name=${encodeURIComponent(name)}&score=${finalScore}&timeStr=${encodeURIComponent(timeStr)}`)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('lb-name-area').style.display = 'none';
+    document.getElementById('result-buttons').style.display = 'block';
+    btn.disabled = false; btn.innerHTML = `<span data-i18n="btn_submit">${i18n[currentLang].btn_submit}</span>`;
+    showLeaderboard();
+  }).catch(e => {
+    alert("Error saving score");
+    btn.disabled = false; btn.innerHTML = `<span data-i18n="btn_submit">${i18n[currentLang].btn_submit}</span>`;
+  });
+}
+
+function showLeaderboard() {
+  document.getElementById('panel-result').style.display = 'none';
+  document.getElementById('panel-start').style.display = 'none';
+  document.getElementById('panel-leaderboard').style.display = 'block';
+  document.getElementById('lb-list').innerHTML = "Loading...";
+
+  fetch(`${GAS_URL}?action=get`)
+  .then(res => res.json())
+  .then(data => {
+    let html = "";
+    if (data.length === 0) { html = "No records yet. Be the first!"; } 
+    else {
+      data.forEach((row, i) => {
+        let rank = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i+1}.`;
+        html += `<div style="display:flex; justify-content:space-between; border-bottom:1px dashed #555; padding:8px 0;">
+          <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:40%; color:#F7931A;">${rank} ${row.name}</span>
+          <span style="color:#FFF;">${row.score} <span style="color:#aaa; font-size:8px;">[${row.timeStr}]</span></span>
+        </div>`;
+      });
+    }
+    document.getElementById('lb-list').innerHTML = html;
+  }).catch(e => { document.getElementById('lb-list').innerHTML = "Error loading leaderboard."; });
+}
+
+function closeLeaderboard() {
+  document.getElementById('panel-leaderboard').style.display = 'none';
+  if (score > 0 && isGameOver) document.getElementById('panel-result').style.display = 'block';
+  else document.getElementById('panel-start').style.display = 'block';
+}
+
+function shareTwitter() {
+  const text = `I survived for ${document.getElementById('final-time').innerText} and scored ${Math.floor(score)} points in BITCOIN RUN! 🏃‍♂️⚡️\nDodge the villains (GOX, SBF, KIM) and stack Sats!\n#Bitcoin #LightningNetwork`;
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+// ----------------------------------------------------
 // ゲームエンジン (Canvas 2D)
 // ----------------------------------------------------
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-
-function resizeCanvas() {
-  canvas.width = Math.min(window.innerWidth * 0.95, 800);
-  canvas.height = 360; 
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+// 内部解像度を完全に固定 (スマホの速度バグ解決の要！)
+canvas.width = 800;
+canvas.height = 360; 
 
 let player, obstacles, items, bgElements, gameSpeed, score, frame, isGameOver, reqId;
 
 function startGame() {
   document.getElementById('panel-start').style.display = 'none';
   document.getElementById('panel-result').style.display = 'none';
+  document.getElementById('panel-leaderboard').style.display = 'none';
   canvas.style.display = 'block';
   
-  // 初期化 (難易度調整: gravityとjumpを少し上げて滞空時間を短く、テンポを上げる)
   player = { x: 50, y: 100, r: 16, vy: 0, gravity: 0.65, jump: -10, jumpCount: 0, maxJumps: 3 };
-  obstacles = [];
-  items =[];
+  obstacles = []; items =[];
   
-  // 背景要素（雲と山）
   bgElements = {
     clouds:[ {x: 50, y: 60, w: 60}, {x: 350, y: 90, w: 80}, {x: 650, y: 50, w: 50} ],
     mountains:[ {x: 100, y: canvas.height - 40, w: 150, h: 100}, {x: 500, y: canvas.height - 40, w: 200, h: 150} ],
     trees:[ {x: 200, y: canvas.height - 40}, {x: 450, y: canvas.height - 40}, {x: 700, y: canvas.height - 40} ]
   };
 
-  gameSpeed = 5.5; // 初期スピード少しアップ
-  score = 0;
-  frame = 0;
-  isGameOver = false;
+  gameSpeed = 5.5; score = 0; frame = 0; isGameOver = false;
 
   if(reqId) cancelAnimationFrame(reqId);
   updateGame();
 }
 
-// ⚡️ 3段ジャンプ
+// 📱 画面のどこをタップしてもジャンプできるようにする処理
 function jump() {
   if (isGameOver) return;
   if (player.jumpCount < player.maxJumps) {
@@ -174,55 +351,50 @@ function jump() {
     player.jumpCount++;
   }
 }
+
+// パネル外（Canvas上や背景）のタップ・クリックでのみジャンプを発火
+window.addEventListener('touchstart', (e) => {
+  if (e.target.closest('.panel') || e.target.tagName === 'SELECT') return; // UI操作時はジャンプさせない
+  e.preventDefault(); jump();
+}, {passive: false});
+
+window.addEventListener('mousedown', (e) => {
+  if (e.target.closest('.panel') || e.target.tagName === 'SELECT') return;
+  jump();
+});
 window.addEventListener('keydown', (e) => { if(e.code === 'Space') jump(); });
-canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); }, {passive: false});
-canvas.addEventListener('mousedown', jump);
 
 function updateGame() {
   if (isGameOver) return;
 
-  // 1. プレイヤーの物理演算
   player.vy += player.gravity;
   player.y += player.vy;
   const groundY = canvas.height - 40; 
 
-  // FIATの沼（穴）の上にいるかどうかの判定
   let isOverPit = false;
   for (let obs of obstacles) {
-    if (obs.type === 'fiat_pit') {
-      // プレイヤーが穴の範囲内（少しマージンあり）にいるか
-      if (player.x > obs.x + 10 && player.x < obs.x + obs.w - 10) {
-        isOverPit = true;
-      }
+    if (obs.type === 'fiat_pit' && player.x > obs.x + 10 && player.x < obs.x + obs.w - 10) {
+      isOverPit = true;
     }
   }
 
-  // 地面の判定（沼の上にいない時だけ着地できる）
   if (!isOverPit && player.y + player.r >= groundY) {
     player.y = groundY - player.r;
     player.vy = 0;
     player.jumpCount = 0; 
   }
 
-  // 画面の下に落ちたらゲームオーバー
-  if (player.y - player.r > canvas.height) {
-    gameOver();
-    return;
-  }
+  if (player.y - player.r > canvas.height) { gameOver(); return; }
 
-  // 2. 障害物とアイテムの生成
   frame++;
   let spawnRate = Math.max(35, 80 - Math.floor(gameSpeed * 4)); 
   
   if (frame % spawnRate === 0) {
-    let r = Math.random();
-    if (r < 0.25) {
-      // 🕳️ FIATの沼 (幅広の崖)
-      let w = 120 + Math.random() * 80; // 最大200pxの幅
+    if (Math.random() < 0.25) {
+      let w = 120 + Math.random() * 80;
       obstacles.push({ type: 'fiat_pit', x: canvas.width, y: groundY, w: w, h: 40 });
     } else {
-      // 👿 ヴィラン
-      const types = ['gox', 'sbf', 'kim'];
+      const types =['gox', 'sbf', 'kim'];
       const type = types[Math.floor(Math.random() * types.length)];
       let w = 45, h = 55;
       if (type === 'gox') { w = 50; h = 60; }
@@ -231,22 +403,15 @@ function updateGame() {
     }
   }
 
-  // Sats（雷マーク）の生成
-  if (frame % 80 === 0) {
-    items.push({ x: canvas.width, y: groundY - 60 - Math.random() * 100, r: 15 });
-  }
+  if (frame % 80 === 0) items.push({ x: canvas.width, y: groundY - 60 - Math.random() * 100, r: 15 });
 
-  // 3. 背景の移動 (パララックス)
   bgElements.clouds.forEach(c => { c.x -= gameSpeed * 0.2; if(c.x + c.w < 0) c.x = canvas.width + Math.random()*100; });
   bgElements.mountains.forEach(m => { m.x -= gameSpeed * 0.1; if(m.x + m.w < -100) m.x = canvas.width + Math.random()*200; });
   bgElements.trees.forEach(t => { t.x -= gameSpeed * 0.5; if(t.x < -50) t.x = canvas.width + Math.random()*100; });
 
-  // 4. 当たり判定と移動
   for (let i = 0; i < obstacles.length; i++) {
     let obs = obstacles[i];
     obs.x -= gameSpeed;
-    
-    // FIAT沼以外のヴィランに対する当たり判定
     if (obs.type !== 'fiat_pit') {
       let hitbox = { x: obs.x + 8, y: obs.y + 10, w: obs.w - 16, h: obs.h - 10 };
       if (circleRectCollide(player, hitbox)) { gameOver(); return; }
@@ -256,178 +421,114 @@ function updateGame() {
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
     item.x -= gameSpeed;
-    let dx = player.x - item.x;
-    let dy = player.y - item.y;
+    let dx = player.x - item.x; let dy = player.y - item.y;
     if (Math.sqrt(dx*dx + dy*dy) < player.r + item.r) {
-      score += 100; // サトシ取得ボーナス
-      items.splice(i, 1);
-      i--;
+      score += 100; items.splice(i, 1); i--;
     }
   }
 
-  // 画面外の要素を削除
   obstacles = obstacles.filter(o => o.x + o.w > 0);
   items = items.filter(i => i.x + i.r > 0);
 
-  // 5. スコアと難易度（無限上昇）
   score += 0.2; 
-  gameSpeed = 5.5 + (frame / 500); // じわじわスピードアップ
+  gameSpeed = 5.5 + (frame / 500); 
   
   drawGame();
   reqId = requestAnimationFrame(updateGame);
 }
 
 function circleRectCollide(circle, rect) {
-  let testX = circle.x;
-  let testY = circle.y;
+  let testX = circle.x; let testY = circle.y;
   if (circle.x < rect.x) testX = rect.x;
   else if (circle.x > rect.x + rect.w) testX = rect.x + rect.w;
   if (circle.y < rect.y) testY = rect.y;
   else if (circle.y > rect.y + rect.h) testY = rect.y + rect.h;
-  let distX = circle.x - testX;
-  let distY = circle.y - testY;
+  let distX = circle.x - testX; let distY = circle.y - testY;
   return Math.sqrt((distX*distX) + (distY*distY)) <= circle.r;
 }
 
 function drawGame() {
-  // 空
-  ctx.fillStyle = "#5CB8FF";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#5CB8FF"; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // 山 (遠景)
   ctx.fillStyle = "#898989";
   for(let m of bgElements.mountains) {
     ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(m.x + m.w/2, m.y - m.h); ctx.lineTo(m.x + m.w, m.y); ctx.fill();
-    ctx.fillStyle = "#FFF";
-    ctx.beginPath(); ctx.moveTo(m.x + m.w/2, m.y - m.h); ctx.lineTo(m.x + m.w/2 + 20, m.y - m.h + 30); ctx.lineTo(m.x + m.w/2 - 20, m.y - m.h + 30); ctx.fill();
+    ctx.fillStyle = "#FFF"; ctx.beginPath(); ctx.moveTo(m.x + m.w/2, m.y - m.h); ctx.lineTo(m.x + m.w/2 + 20, m.y - m.h + 30); ctx.lineTo(m.x + m.w/2 - 20, m.y - m.h + 30); ctx.fill();
     ctx.fillStyle = "#898989"; 
   }
 
-  // 雲
   ctx.fillStyle = "#FFF";
   for(let c of bgElements.clouds) {
     ctx.beginPath(); ctx.arc(c.x, c.y, c.w/2, 0, Math.PI*2); ctx.arc(c.x + c.w/2, c.y + 10, c.w/2.5, 0, Math.PI*2); ctx.arc(c.x - c.w/2, c.y + 10, c.w/2.5, 0, Math.PI*2); ctx.fill();
   }
 
-  // 木
   for(let t of bgElements.trees) {
     ctx.fillStyle = "#8B5A2B"; ctx.fillRect(t.x - 5, t.y - 20, 10, 20); 
     ctx.fillStyle = "#55C936"; ctx.beginPath(); ctx.arc(t.x, t.y - 30, 25, 0, Math.PI*2); ctx.fill(); 
   }
 
-  // 🌍 地面の描画
   const groundY = canvas.height - 40;
   ctx.fillStyle = "#55C936"; ctx.fillRect(0, groundY, canvas.width, 10); 
   ctx.fillStyle = "#8B5A2B"; ctx.fillRect(0, groundY + 10, canvas.width, 30); 
 
-  // 🕳️ FIAT沼の描画（地面を空の色でくり抜いて、中にFIATを描画）
   for (let obs of obstacles) {
     if (obs.type === 'fiat_pit') {
-      ctx.fillStyle = "#5CB8FF"; // 空色で地面を消す
-      ctx.fillRect(obs.x, groundY - 1, obs.w, 42); 
-
+      ctx.fillStyle = "#5CB8FF"; ctx.fillRect(obs.x, groundY - 1, obs.w, 42); 
       if (imgFiat.complete && imgFiat.naturalHeight !== 0) {
-        // 沼の中にFIAT画像を敷き詰める
-        let imgSize = 40;
-        ctx.save();
+        let imgSize = 40; ctx.save();
         ctx.beginPath(); ctx.rect(obs.x, groundY + 5, obs.w, 35); ctx.clip(); 
-        for(let px = obs.x; px < obs.x + obs.w; px += imgSize) {
-          ctx.drawImage(imgFiat, px, groundY + 5, imgSize, imgSize);
-        }
+        for(let px = obs.x; px < obs.x + obs.w; px += imgSize) ctx.drawImage(imgFiat, px, groundY + 5, imgSize, imgSize);
         ctx.restore();
       } else {
-        // 画像がない時の代用品
         ctx.fillStyle = "#8B0000"; ctx.fillRect(obs.x, groundY + 10, obs.w, 30);
-        ctx.fillStyle = "#FFF"; ctx.font = "bold 10px 'Press Start 2P'"; ctx.textAlign="center";
-        ctx.fillText("FIAT", obs.x + obs.w/2, groundY + 30);
+        ctx.fillStyle = "#FFF"; ctx.font = "bold 10px 'Press Start 2P'"; ctx.textAlign="center"; ctx.fillText("FIAT", obs.x + obs.w/2, groundY + 30);
       }
     }
   }
   
-  // 🧑‍🚀 プレイヤー (ビットコイン君)
-  ctx.save();
-  ctx.translate(player.x, player.y);
+  ctx.save(); ctx.translate(player.x, player.y);
   if(player.vy === 0) ctx.rotate(Math.sin(frame * 0.4) * 0.3); 
-  
   ctx.beginPath(); ctx.arc(0, 0, player.r, 0, Math.PI*2);
-  ctx.fillStyle = "#F7931A"; ctx.fill();
-  ctx.lineWidth = 2; ctx.strokeStyle = "#fff"; ctx.stroke();
-  
-  ctx.fillStyle = "#fff"; ctx.font = "bold 18px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-  ctx.fillText("₿", 0, 0);
+  ctx.fillStyle = "#F7931A"; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = "#fff"; ctx.stroke();
+  ctx.fillStyle = "#fff"; ctx.font = "bold 18px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("₿", 0, 0);
   ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(6, -6, 4, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = "black"; ctx.beginPath(); ctx.arc(7, -6, 2, 0, Math.PI*2); ctx.fill();
-  ctx.restore();
+  ctx.fillStyle = "black"; ctx.beginPath(); ctx.arc(7, -6, 2, 0, Math.PI*2); ctx.fill(); ctx.restore();
 
-  // 👿 ヴィランの描画
   for (let obs of obstacles) {
     let img;
     if (obs.type === 'gox' && imgGox.complete && imgGox.naturalHeight !== 0) img = imgGox;
     else if (obs.type === 'sbf' && imgSbf.complete && imgSbf.naturalHeight !== 0) img = imgSbf;
     else if (obs.type === 'kim' && imgKim.complete && imgKim.naturalHeight !== 0) img = imgKim;
-
-    if (img) {
-      ctx.drawImage(img, obs.x, obs.y, obs.w, obs.h);
-    } else if (obs.type !== 'fiat_pit') {
+    if (img) { ctx.drawImage(img, obs.x, obs.y, obs.w, obs.h); } 
+    else if (obs.type !== 'fiat_pit') {
       ctx.fillStyle = "#E94560"; ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
       ctx.fillStyle = "#FFF"; ctx.font = "10px Arial"; ctx.textAlign="center"; ctx.fillText(obs.type.toUpperCase(), obs.x + obs.w/2, obs.y + obs.h/2);
     }
   }
 
-  // ⚡️ アイテム (輝くSats)
   for (let item of items) {
-    ctx.save();
-    ctx.shadowBlur = 15; ctx.shadowColor = "#FFEA00"; 
-    ctx.beginPath(); ctx.arc(item.x, item.y, item.r, 0, Math.PI*2);
-    ctx.fillStyle = "#FFC300"; ctx.fill();
+    ctx.save(); ctx.shadowBlur = 15; ctx.shadowColor = "#FFEA00"; 
+    ctx.beginPath(); ctx.arc(item.x, item.y, item.r, 0, Math.PI*2); ctx.fillStyle = "#FFC300"; ctx.fill();
     ctx.lineWidth = 2; ctx.strokeStyle = "#FFFFFF"; ctx.stroke();
-    
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = "#000"; ctx.font = "bold 16px Arial"; ctx.textAlign="center"; ctx.textBaseline="middle";
-    ctx.fillText("⚡", item.x, item.y + 1);
-    ctx.restore();
+    ctx.shadowBlur = 0; ctx.fillStyle = "#000"; ctx.font = "bold 16px Arial"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText("⚡", item.x, item.y + 1); ctx.restore();
   }
 
-  // ⏱️ Canvas内へのスコアと時間の描画
   let totalSeconds = Math.floor(frame / 60);
-  let m = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-  let s = String(totalSeconds % 60).padStart(2, '0');
-
-  ctx.fillStyle = "#FFF";
-  ctx.font = "14px 'Press Start 2P', cursive";
-  ctx.shadowBlur = 4; ctx.shadowColor = "#000";
-  
-  ctx.textAlign = "left"; ctx.textBaseline = "top";
-  ctx.fillText(`TIME: ${m}:${s}`, 15, 15);
-  
-  ctx.textAlign = "right";
-  ctx.fillText(`SCORE: ${Math.floor(score)}`, canvas.width - 15, 15);
-  ctx.shadowBlur = 0;
+  let m = String(Math.floor(totalSeconds / 60)).padStart(2, '0'); let s = String(totalSeconds % 60).padStart(2, '0');
+  ctx.fillStyle = "#FFF"; ctx.font = "14px 'Press Start 2P', cursive"; ctx.shadowBlur = 4; ctx.shadowColor = "#000";
+  ctx.textAlign = "left"; ctx.textBaseline = "top"; ctx.fillText(`TIME: ${m}:${s}`, 15, 15);
+  ctx.textAlign = "right"; ctx.fillText(`SCORE: ${Math.floor(score)}`, canvas.width - 15, 15); ctx.shadowBlur = 0;
 }
 
 function gameOver() {
-  isGameOver = true;
-  canvas.style.display = 'none';
-  
-  let totalSeconds = Math.floor(frame / 60);
-  let m = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-  let s = String(totalSeconds % 60).padStart(2, '0');
-
+  isGameOver = true; canvas.style.display = 'none';
+  let m = String(Math.floor(Math.floor(frame / 60) / 60)).padStart(2, '0'); let s = String(Math.floor(frame / 60) % 60).padStart(2, '0');
   document.getElementById('final-time').innerText = `${m}:${s}`;
   document.getElementById('final-score').innerText = Math.floor(score);
   document.getElementById('panel-result').style.display = 'block';
 }
 
-function shareTwitter() {
-  const finalScore = Math.floor(score);
-  const finalTime = document.getElementById('final-time').innerText;
-  const text = `I survived for ${finalTime} and scored ${finalScore} points in BITCOIN RUN! 🏃‍♂️⚡️\nDodge the villains (GOX, SBF, KIM) and stack Sats!\n#Bitcoin #LightningNetwork`;
-  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
-}
-
-// 初期化
 changeLang('ja');
 </script>
-
 </body>
 </html>
