@@ -42,12 +42,8 @@
     }
     .btn:active { transform: translateY(4px); box-shadow: none; }
     .btn-secondary { background: #0f3460; color: #fff; box-shadow: 0 4px 0 #0a2442; }
-
-    .qr-img { width: 200px; height: 200px; border: 4px solid #fff; border-radius: 8px; margin: 10px auto; display: block; }
-    .inv-text { width: 100%; padding: 10px; background: #000; color: #00FF88; border: 1px solid #333; border-radius: 5px; font-family: monospace; font-size: 10px; margin-bottom: 15px; word-break: break-all; resize: none; }
-    
-    .loading-text { font-size: 12px; color: var(--primary); animation: blink 1s infinite; font-family: 'Press Start 2P', cursive; margin-top: 10px;}
-    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+    /* テスト用無料ボタン */
+    .btn-free { background: #00FF88; color: #000; box-shadow: 0 4px 0 #009955; }
 
     /* --- ゲームキャンバス --- */
     canvas {
@@ -71,21 +67,16 @@
 
   <div id="app-container">
     
-    <!-- 1. トップ画面 (Paywall) -->
+    <!-- 1. トップ画面 -->
     <div class="panel" id="panel-start">
       <div class="title">BITCOIN<br>RUN 🏃‍♂️</div>
-      <div class="desc" data-i18n="desc">10 Satsを払ってFiat(法定通貨)を飛び越えろ！<br>ハイスコアを目指せ！</div>
-      <button class="btn" onclick="generateInvoice()"><span data-i18n="btn_play">PLAY (10 SATS)</span></button>
-    </div>
-
-    <!-- 2. インボイス画面 -->
-    <div class="panel" id="panel-invoice" style="display:none;">
-      <div class="title" style="font-size: 1rem;" data-i18n="title_pay">DEPOSIT SATS</div>
-      <a id="wallet-link" href="#"><img id="qr-code" class="qr-img" src=""></a>
-      <p style="font-size: 10px; margin-bottom: 5px;" data-i18n="tap_copy">Tap invoice to copy</p>
-      <textarea class="inv-text" id="inv-text" readonly onclick="copyInvoice()"></textarea>
-      <a id="wallet-btn" class="btn btn-secondary" href="#" style="display:block; text-decoration:none; padding:15px 0;"><span data-i18n="btn_wallet">📱 OPEN WALLET</span></a>
-      <div class="loading-text" data-i18n="waiting">WAITING FOR PAYMENT...</div>
+      <div class="desc" data-i18n="desc">Fiat(法定通貨)を飛び越えろ！<br>ハイスコアを目指せ！</div>
+      
+      <!-- テスト用に決済をスキップして直接ゲームを開始するボタン -->
+      <button class="btn btn-free" onclick="startGame()"><span data-i18n="btn_play_free">PLAY FREE (TEST)</span></button>
+      
+      <!-- 本番用のボタンは一旦コメントアウト（または非表示）にしておきます -->
+      <!-- <button class="btn" onclick="generateInvoice()"><span data-i18n="btn_play">PLAY (10 SATS)</span></button> -->
     </div>
 
     <!-- 3. ゲーム画面 -->
@@ -96,38 +87,30 @@
       <div class="title" style="color:var(--text);" data-i18n="gameover">GAME OVER</div>
       <div class="title" style="font-size:1.8rem; margin: 20px 0;" id="final-score">0</div>
       <button class="btn btn-secondary" onclick="shareTwitter()"><span data-i18n="btn_share">🐦 SHARE TO X</span></button>
-      <button class="btn" onclick="generateInvoice()"><span data-i18n="btn_retry">RETRY (10 SATS)</span></button>
+      
+      <!-- テスト用に無料リトライボタン -->
+      <button class="btn btn-free" onclick="startGame()"><span data-i18n="btn_retry_free">RETRY FREE</span></button>
     </div>
 
   </div>
 
 <script>
-// ====================================================
-// 🛑 LNBits設定 (Invoice/Read Keyを使用してください！)
-// ※このキーは入金専用なので、フロントエンドに露出しても残高は安全です。
-// ====================================================
-const LNBITS_API_URL = "https://demo.lnbits.com/api/v1/payments";
-const INVOICE_KEY = "67e5b0ad270f44d19e6d768bb3314e49"; // <- あなたのInvoice/Readキーに置き換えてください
-
 // 多言語辞書
 const i18n = {
   en: {
-    desc: "Pay 10 Sats to jump over the melting Fiat!<br>Aim for the high score!",
-    btn_play: "PLAY (10 SATS)", title_pay: "PAY TO PLAY", tap_copy: "Tap invoice to copy",
-    btn_wallet: "📱 OPEN WALLET", waiting: "WAITING FOR PAYMENT...",
-    gameover: "GAME OVER", btn_share: "🐦 SHARE TO X", btn_retry: "RETRY (10 SATS)", alert_copy: "Copied to clipboard!"
+    desc: "Jump over the melting Fiat!<br>Aim for the high score!",
+    btn_play_free: "PLAY FREE", gameover: "GAME OVER", 
+    btn_share: "🐦 SHARE TO X", btn_retry_free: "RETRY FREE"
   },
   ja: {
-    desc: "10 Satsを払ってFiat（法定通貨）を飛び越えろ！<br>ハイスコアを目指せ！",
-    btn_play: "プレイする (10 SATS)", title_pay: "お支払い", tap_copy: "タップしてコピー",
-    btn_wallet: "📱 ウォレットを開く", waiting: "支払いを確認中...",
-    gameover: "ゲームオーバー", btn_share: "🐦 𝕏でシェア", btn_retry: "もう一度 (10 SATS)", alert_copy: "コピーしました！"
+    desc: "Fiat（法定通貨）を飛び越えろ！<br>ハイスコアを目指せ！",
+    btn_play_free: "無料でプレイ", gameover: "ゲームオーバー", 
+    btn_share: "🐦 𝕏でシェア", btn_retry_free: "もう一度プレイ"
   },
   ko: {
-    desc: "10 Sats를 내고 법정화폐(Fiat)를 뛰어넘으세요!<br>최고 점수에 도전하세요!",
-    btn_play: "플레이 (10 SATS)", title_pay: "결제하기", tap_copy: "탭하여 복사",
-    btn_wallet: "📱 지갑 열기", waiting: "결제 대기 중...",
-    gameover: "게임 오버", btn_share: "🐦 𝕏에 공유하기", btn_retry: "다시 하기 (10 SATS)", alert_copy: "복사되었습니다!"
+    desc: "법정화폐(Fiat)를 뛰어넘으세요!<br>최고 점수에 도전하세요!",
+    btn_play_free: "무료로 플레이", gameover: "게임 오버", 
+    btn_share: "🐦 𝕏에 공유하기", btn_retry_free: "다시 플레이"
   }
 };
 
@@ -137,59 +120,6 @@ function changeLang(lang) {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     el.innerHTML = i18n[lang][el.getAttribute('data-i18n')];
   });
-}
-
-// ----------------------------------------------------
-// 決済システム (Paywall)
-// ----------------------------------------------------
-let checkPaymentInterval = null;
-
-function generateInvoice() {
-  document.getElementById('panel-start').style.display = 'none';
-  document.getElementById('panel-result').style.display = 'none';
-  document.getElementById('panel-invoice').style.display = 'block';
-
-  fetch(LNBITS_API_URL, {
-    method: "POST",
-    headers: { "X-Api-Key": INVOICE_KEY, "Content-Type": "application/json" },
-    body: JSON.stringify({ out: false, amount: 10, memo: "BITCOIN RUN 🏃‍♂️ (10 Sats)" })
-  })
-  .then(res => res.json())
-  .then(data => {
-    const hash = data.payment_hash;
-    const inv = data.payment_request;
-    
-    document.getElementById('qr-code').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=lightning:${inv}`;
-    document.getElementById('inv-text').value = inv;
-    document.getElementById('wallet-link').href = `lightning:${inv}`;
-    document.getElementById('wallet-btn').href = `lightning:${inv}`;
-
-    // スマホ判定＆ウォレット自動起動
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if(isMobile) setTimeout(() => { window.location.href = `lightning:${inv}`; }, 500);
-
-    pollPayment(hash);
-  }).catch(e => { alert("API Error. Please try again."); });
-}
-
-function pollPayment(hash) {
-  if (checkPaymentInterval) clearInterval(checkPaymentInterval);
-  checkPaymentInterval = setInterval(() => {
-    fetch(`${LNBITS_API_URL}/${hash}`, { headers: { "X-Api-Key": INVOICE_KEY } })
-    .then(res => res.json())
-    .then(data => {
-      if (data.paid) {
-        clearInterval(checkPaymentInterval);
-        startGame(); // 支払い完了でゲーム開始！
-      }
-    }).catch(console.error);
-  }, 3000);
-}
-
-function copyInvoice() {
-  const txt = document.getElementById('inv-text');
-  txt.select(); document.execCommand('copy');
-  alert(i18n[currentLang].alert_copy);
 }
 
 function shareTwitter() {
@@ -204,7 +134,6 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreUI = document.getElementById('score-display');
 
-// 画面サイズ設定
 function resizeCanvas() {
   canvas.width = Math.min(window.innerWidth * 0.95, 600);
   canvas.height = 300;
@@ -215,11 +144,13 @@ resizeCanvas();
 let player, obstacles, items, gameSpeed, score, frame, isGameOver, reqId;
 
 function startGame() {
-  document.getElementById('panel-invoice').style.display = 'none';
+  // パネルを非表示にしてCanvasを表示
+  document.getElementById('panel-start').style.display = 'none';
+  document.getElementById('panel-result').style.display = 'none';
   canvas.style.display = 'block';
   scoreUI.style.display = 'block';
   
-  // 初期化
+  // ゲームの初期化
   player = { x: 50, y: 100, r: 16, vy: 0, gravity: 0.6, jump: -10 };
   obstacles = [];
   items =[];
@@ -236,7 +167,7 @@ function startGame() {
 function jump() {
   if (isGameOver) return;
   const groundY = canvas.height - 25;
-  // 地面にいる時だけジャンプ可能
+  // 地面にいる時だけジャンプ可能（rは半径。少しの誤差を許容）
   if (player.y + player.r >= groundY - 1) {
     player.vy = player.jump;
   }
@@ -275,7 +206,6 @@ function updateGame() {
   }
 
   // 3. 当たり判定と移動
-  // 障害物
   for (let i = 0; i < obstacles.length; i++) {
     let obs = obstacles[i];
     obs.x -= gameSpeed;
@@ -285,7 +215,6 @@ function updateGame() {
     }
   }
 
-  // アイテム
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
     item.x -= gameSpeed;
@@ -304,7 +233,7 @@ function updateGame() {
 
   // スコア加算と難易度上昇
   score += 0.1;
-  if (Math.floor(score) % 100 === 0) gameSpeed += 0.2; // どんどん速くなる
+  if (Math.floor(score) % 100 === 0) gameSpeed += 0.2; // 徐々にスピードアップ
 
   scoreUI.innerText = `SCORE: ${Math.floor(score)}`;
   drawGame();
@@ -322,7 +251,7 @@ function circleRectCollide(circle, rect) {
   else if (circle.y > rect.y + rect.h) testY = rect.y + rect.h;
   let distX = circle.x - testX;
   let distY = circle.y - testY;
-  return Math.sqrt((distX*distX) + (distY*distY)) <= circle.r - 2; // 少し判定を甘くする(-2)
+  return Math.sqrt((distX*distX) + (distY*distY)) <= circle.r - 2;
 }
 
 function drawGame() {
