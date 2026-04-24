@@ -15,7 +15,7 @@
       align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; touch-action: none;
     }
     
-    /* スマホ縦画面時の警告オーバーレイ */
+    /* 📱 スマホ縦画面時の警告オーバーレイ (日英併記) */
     #rotate-overlay {
       display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(0,0,0,0.95); z-index: 10000; color: #fff;
@@ -27,7 +27,6 @@
       #app-container { display: none !important; }
     }
 
-    /* 100dvhを使うことでスマホのアドレスバー等を考慮した高さになる */
     #app-container {
       width: 100%; max-width: 800px; display: flex; flex-direction: column; 
       align-items: center; justify-content: center; height: 100dvh; position: relative;
@@ -59,15 +58,12 @@
     .qr-img { width: 180px; height: 180px; border: 4px solid #fff; border-radius: 8px; margin: 10px auto; display: block; }
     .inv-text { width: 100%; padding: 10px; background: #000; color: #00FF88; border: 1px solid #333; border-radius: 5px; font-family: monospace; font-size: 10px; margin-bottom: 15px; word-break: break-all; resize: none; }
 
-    /* 🚨 修正ポイント: スマホで絶対に上下が切れないゲームキャンバス */
+    /* ゲームキャンバス */
     canvas {
       display: none; background: #5CB8FF; border: 4px solid #fff;
       border-radius: 8px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); 
-      width: 100%; max-width: 800px;
-      max-height: 90dvh; /* 画面高さを超えないようにする */
-      object-fit: contain; /* アスペクト比を維持して画面内にピタッと収める */
-      aspect-ratio: 800 / 360;
-      image-rendering: pixelated;
+      width: 100%; max-width: 800px; max-height: 90dvh; 
+      object-fit: contain; aspect-ratio: 800 / 360;
     }
   </style>
 </head>
@@ -76,8 +72,8 @@
   <!-- 横画面推奨オーバーレイ -->
   <div id="rotate-overlay">
     <div style="font-size:40px; margin-bottom:20px;">🔄</div>
-    <div>PLEASE ROTATE<br>YOUR DEVICE</div>
-    <div style="font-size:10px; margin-top:10px; color:#aaa;">(Play in Landscape)</div>
+    <div style="margin-bottom:10px;">PLEASE ROTATE<br>YOUR DEVICE</div>
+    <div style="font-family: 'Noto Sans JP', sans-serif; font-size:14px; font-weight:bold; color:#F7931A;">スマホを横向きにしてください</div>
   </div>
 
   <div id="app-container">
@@ -91,15 +87,15 @@
       </div>
 
       <div class="title">BITCOIN<br>RUN 🏃‍♂️</div>
-      <div class="desc" data-i18n="desc">明るい世界を駆け抜けろ！<br>ヴィランやFIATの沼を3段ジャンプで回避し、無限のハイスコアを叩き出せ！</div>
+      <div class="desc" data-i18n="desc">明るい世界を駆け抜けろ！<br>ヴィランを華麗にかわし、無限のハイスコアを叩き出せ！</div>
       
-      <!-- HOW TO PLAY -->
+      <!-- HOW TO PLAY (わかりやすさ重視) -->
       <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; font-size: 10px; line-height: 1.8; color: #ddd; border: 1px solid #333;">
         <div style="color:var(--primary); font-weight:bold; margin-bottom: 5px; text-align:center;" data-i18n="howto_title">📖 HOW TO PLAY</div>
-        <div data-i18n="howto_1">・画面のどこかをタップでジャンプ</div>
-        <div data-i18n="howto_2">・空中でもう一度タップで3段ジャンプ</div>
-        <div data-i18n="howto_3">・ヴィラン、FIAT沼、米ドルオバケを回避！</div>
-        <div data-i18n="howto_4">・⚡を取るとスコアアップ！</div>
+        <div data-i18n="howto_1">👆 画面をタップ/クリックでジャンプ</div>
+        <div data-i18n="howto_2">🚀 空中で連続タップして【最大3段ジャンプ】！</div>
+        <div data-i18n="howto_3">👿 GOX, SBF, KIM, FIATの沼を避けろ！</div>
+        <div data-i18n="howto_4">⚡ 雷マークを取るとスコアボーナス！</div>
       </div>
 
       <button class="btn btn-free" onclick="startGame()"><span data-i18n="btn_play_free">PLAY FREE</span></button>
@@ -132,7 +128,7 @@
         <button class="btn btn-secondary" onclick="cancelLbPay()"><span data-i18n="btn_cancel">CANCEL</span></button>
       </div>
 
-      <!-- 名前入力エリア (決済後) -->
+      <!-- 名前入力エリア -->
       <div id="lb-name-area" style="display:none;">
         <div class="title" style="font-size: 1rem; color:#00FF88;" data-i18n="payment_success">SUCCESS!</div>
         <p style="font-size: 10px;" data-i18n="enter_name">Enter your name:</p>
@@ -160,33 +156,27 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbwYOUR_GAS_URL_HERE/exe
 const LNBITS_API_URL = "https://demo.lnbits.com/api/v1/payments";
 const LNBITS_INVOICE_KEY = "67e5b0ad270f44d19e6d768bb3314e49"; 
 
-// 画像
-const imgGox = new Image(); imgGox.src = 'gox.png';
-const imgSbf = new Image(); imgSbf.src = 'sbf.png';
-const imgKim = new Image(); imgKim.src = 'kim.png';
-const imgFiat = new Image(); imgFiat.src = 'FIAT.png';
-
 // 多言語辞書
 const i18n = {
   en: {
-    desc: "Run through the bright world!<br>Triple jump to dodge villains and FIAT pits, aiming for an infinite high score!",
-    howto_title: "📖 HOW TO PLAY", howto_1: "・Tap anywhere to jump", howto_2: "・Triple Jump (Max 3 times)", howto_3: "・Dodge Villains, FIAT pits & $ Ghosts!", howto_4: "・Grab ⚡ to boost score",
+    desc: "Run through the bright world!<br>Dodge villains and aim for an infinite high score!",
+    howto_title: "📖 HOW TO PLAY", howto_1: "👆 Tap/Click anywhere to JUMP", howto_2: "🚀 Tap in mid-air for TRIPLE JUMP!", howto_3: "👿 Dodge GOX, SBF, KIM & FIAT pits", howto_4: "⚡ Grab lightning to boost score",
     btn_play_free: "PLAY FREE", gameover: "GAME OVER", btn_share: "🐦 SHARE TO X", btn_retry_free: "RETRY FREE",
     btn_leaderboard: "🏆 SAVE SCORE (100 SATS)", btn_view_lb: "📋 VIEW LEADERBOARD",
     pay_to_record: "PAY TO RECORD", waiting: "WAITING FOR PAYMENT...", btn_cancel: "CANCEL", btn_close: "CLOSE",
     payment_success: "SUCCESS!", enter_name: "Enter your name (Max 15):", btn_submit: "SUBMIT SCORE", alert_copy: "Copied!"
   },
   ja: {
-    desc: "明るい世界を駆け抜けろ！<br>ヴィランやFIATの沼を3段ジャンプで回避し、無限のハイスコアを叩き出せ！",
-    howto_title: "📖 遊び方", howto_1: "・画面のどこかをタップでジャンプ", howto_2: "・空中でもう一度タップで3段ジャンプ", howto_3: "・ヴィラン、FIAT沼、米ドルオバケを回避！", howto_4: "・⚡を取るとスコアアップ！",
+    desc: "明るい世界を駆け抜けろ！<br>ヴィランを華麗にかわし、無限のハイスコアを叩き出せ！",
+    howto_title: "📖 遊び方", howto_1: "👆 画面をタップ/クリックでジャンプ", howto_2: "🚀 空中で連続タップして【最大3段ジャンプ】！", howto_3: "👿 GOX, SBF, KIM, FIATの沼を避けろ！", howto_4: "⚡ 雷マークを取るとスコアボーナス！",
     btn_play_free: "無料でプレイ", gameover: "ゲームオーバー", btn_share: "🐦 𝕏でシェア", btn_retry_free: "もう一度プレイ",
     btn_leaderboard: "🏆 スコアを記録 (100 SATS)", btn_view_lb: "📋 ランキングを見る",
     pay_to_record: "100 Satsのお賽銭", waiting: "支払いを確認中...", btn_cancel: "キャンセル", btn_close: "閉じる",
     payment_success: "支払い完了！", enter_name: "名前を入力してください:", btn_submit: "記録する", alert_copy: "コピーしました！"
   },
   ko: {
-    desc: "밝은 세상을 달려보세요!<br>3단 점프로 악당과 FIAT 늪을 피하고 무한 최고 점수에 도전하세요!",
-    howto_title: "📖 플레이 방법", howto_1: "・화면을 탭하여 점프", howto_2: "・최대 3단 점프 가능", howto_3: "・악당, FIAT 늪, 달러 유령을 피하세요!", howto_4: "・⚡를 획득하여 점수 올리기",
+    desc: "밝은 세상을 달려보세요!<br>악당을 피하고 무한 최고 점수에 도전하세요!",
+    howto_title: "📖 플레이 방법", howto_1: "👆 화면을 탭/클릭하여 점프", howto_2: "🚀 공중에서 연속 탭으로 【3단 점프】!", howto_3: "👿 GOX, SBF, KIM, FIAT 늪을 피하세요!", howto_4: "⚡ 번개를 획득하여 점수 올리기!",
     btn_play_free: "무료로 플레이", gameover: "게임 오버", btn_share: "🐦 𝕏에 공유하기", btn_retry_free: "다시 플레이",
     btn_leaderboard: "🏆 점수 기록 (100 SATS)", btn_view_lb: "📋 랭킹 보기",
     pay_to_record: "결제하여 기록하기", waiting: "결제 대기 중...", btn_cancel: "취소", btn_close: "닫기",
@@ -396,13 +386,11 @@ function updateGame() {
       let w = 120 + Math.random() * 80;
       obstacles.push({ type: 'fiat_pit', x: canvas.width, y: groundY, w: w, h: 40 });
     } else {
-      // 👻 新しいヴィラン「米ドルオバケ(ghost)」を追加
       const types =['gox', 'sbf', 'kim', 'ghost'];
       const type = types[Math.floor(Math.random() * types.length)];
-      let w = 45, h = 55;
-      if (type === 'gox') { w = 50; h = 60; }
-      if (type === 'kim') { w = 55; h = 55; }
-      if (type === 'ghost') { w = 50; h = 60; }
+      let w = 40, h = 55;
+      if (type === 'gox') { w = 45; h = 55; }
+      if (type === 'ghost') { w = 45; h = 55; }
       obstacles.push({ type: type, x: canvas.width, y: groundY - h, w: w, h: h });
     }
   }
@@ -478,15 +466,18 @@ function drawGame() {
   for (let obs of obstacles) {
     if (obs.type === 'fiat_pit') {
       ctx.fillStyle = "#5CB8FF"; ctx.fillRect(obs.x, groundY - 1, obs.w, 42); 
-      if (imgFiat.complete && imgFiat.naturalHeight !== 0) {
-        let imgSize = 40; ctx.save();
-        ctx.beginPath(); ctx.rect(obs.x, groundY + 5, obs.w, 35); ctx.clip(); 
-        for(let px = obs.x; px < obs.x + obs.w; px += imgSize) ctx.drawImage(imgFiat, px, groundY + 5, imgSize, imgSize);
-        ctx.restore();
-      } else {
-        ctx.fillStyle = "#8B0000"; ctx.fillRect(obs.x, groundY + 10, obs.w, 30);
-        ctx.fillStyle = "#FFF"; ctx.font = "bold 10px 'Press Start 2P'"; ctx.textAlign="center"; ctx.fillText("FIAT", obs.x + obs.w/2, groundY + 30);
+      
+      // 🌋 毒沼のアニメーション描画
+      ctx.fillStyle = "#8B0000"; 
+      ctx.beginPath(); ctx.moveTo(obs.x, groundY + 40); ctx.lineTo(obs.x, groundY + 10);
+      for (let px = 0; px <= obs.w; px += 10) {
+        let py = groundY + 10 + Math.sin(frame * 0.1 + (obs.x + px) * 0.05) * 4;
+        ctx.lineTo(obs.x + px, py);
       }
+      ctx.lineTo(obs.x + obs.w, groundY + 40); ctx.closePath(); ctx.fill();
+      
+      ctx.fillStyle = "rgba(255,255,255,0.7)"; ctx.font = "bold 14px 'Press Start 2P'"; ctx.textAlign="center"; 
+      ctx.fillText("FIAT", obs.x + obs.w/2, groundY + 30);
     }
   }
   
@@ -501,44 +492,52 @@ function drawGame() {
   for (let obs of obstacles) {
     if (obs.type === 'fiat_pit') continue;
 
-    let img;
-    if (obs.type === 'gox' && imgGox.complete && imgGox.naturalHeight !== 0) img = imgGox;
-    else if (obs.type === 'sbf' && imgSbf.complete && imgSbf.naturalHeight !== 0) img = imgSbf;
-    else if (obs.type === 'kim' && imgKim.complete && imgKim.naturalHeight !== 0) img = imgKim;
+    let cx = obs.x + obs.w/2;
+    let cy = obs.y + obs.h/2;
 
-    if (img) { 
-      ctx.drawImage(img, obs.x, obs.y, obs.w, obs.h); 
+    if (obs.type === 'gox') {
+      // 👺 GOX ゴブリン
+      cy += 5;
+      ctx.fillStyle = "#1e824c";
+      ctx.beginPath(); ctx.moveTo(cx-10, cy-15); ctx.lineTo(cx-15, cy-30); ctx.lineTo(cx-5, cy-15); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx+10, cy-15); ctx.lineTo(cx+15, cy-30); ctx.lineTo(cx+5, cy-15); ctx.fill();
+      ctx.fillStyle = "#2ecc71"; ctx.beginPath(); ctx.arc(cx, cy, 20, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#e74c3c"; ctx.beginPath(); ctx.arc(cx-8, cy-5, 4, 0, Math.PI*2); ctx.arc(cx+8, cy-5, 4, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#fff"; ctx.font = "bold 10px Arial"; ctx.textAlign="center"; ctx.fillText("GOX", cx, cy+12);
     } 
+    else if (obs.type === 'sbf') {
+      // 🦱 SBF アフロ
+      ctx.fillStyle = "#95a5a6"; ctx.beginPath(); ctx.arc(cx, cy+15, 15, Math.PI, 0); ctx.fill(); ctx.fillRect(cx-15, cy+15, 30, 15);
+      ctx.fillStyle = "#f1c40f"; ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#6e2c00"; ctx.beginPath();
+      ctx.arc(cx-10, cy-10, 10, 0, Math.PI*2); ctx.arc(cx, cy-15, 12, 0, Math.PI*2); ctx.arc(cx+10, cy-10, 10, 0, Math.PI*2);
+      ctx.arc(cx-12, cy-2, 8, 0, Math.PI*2); ctx.arc(cx+12, cy-2, 8, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = "#333"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(cx-6, cy-2); ctx.lineTo(cx-2, cy-2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx+6, cy-2); ctx.lineTo(cx+2, cy-2); ctx.stroke();
+      ctx.fillStyle = "#000"; ctx.font = "bold 8px Arial"; ctx.fillText("SBF", cx, cy+22);
+    }
+    else if (obs.type === 'kim') {
+      // 🚩 KIM 将軍
+      ctx.fillStyle = "#2c3e50"; ctx.beginPath(); ctx.arc(cx, cy+10, 18, Math.PI, 0); ctx.fill(); ctx.fillRect(cx-18, cy+10, 36, 18);
+      ctx.fillStyle = "#f39c12"; ctx.beginPath(); ctx.arc(cx, cy-5, 12, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#000"; ctx.fillRect(cx-10, cy-20, 20, 8);
+      ctx.fillStyle = "#bdc3c7"; ctx.fillRect(cx-20, cy-25, 2, 40); 
+      ctx.fillStyle = "#e74c3c"; ctx.fillRect(cx-35, cy-25, 15, 10); 
+      ctx.fillStyle = "#fff"; ctx.font = "bold 8px Arial"; ctx.fillText("KIM", cx, cy+18);
+    }
     else if (obs.type === 'ghost') {
-      // 👻 新ヴィラン「米ドルオバケ」の描画（画像なしで動作！）
+      // 👻 米ドルオバケ
       let hover = Math.sin(frame * 0.15 + obs.x) * 5; 
       let drawY = obs.y + hover;
-
-      ctx.fillStyle = "#85bb65"; // ドル札の緑色
-      ctx.beginPath();
-      ctx.arc(obs.x + obs.w/2, drawY + obs.w/2, obs.w/2, Math.PI, 0);
-      ctx.lineTo(obs.x + obs.w, drawY + obs.h);
-      ctx.lineTo(obs.x + obs.w * 0.75, drawY + obs.h - 5);
-      ctx.lineTo(obs.x + obs.w * 0.5, drawY + obs.h);
-      ctx.lineTo(obs.x + obs.w * 0.25, drawY + obs.h - 5);
-      ctx.lineTo(obs.x, drawY + obs.h);
-      ctx.closePath(); ctx.fill();
-      
-      // 充血した目
-      ctx.fillStyle = "white";
-      ctx.beginPath(); ctx.arc(obs.x + obs.w/2 - 10, drawY + 20, 6, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(obs.x + obs.w/2 + 10, drawY + 20, 6, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = "#E94560";
-      ctx.beginPath(); ctx.arc(obs.x + obs.w/2 - 10, drawY + 20, 2, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(obs.x + obs.w/2 + 10, drawY + 20, 2, 0, Math.PI*2); ctx.fill();
-
-      // $マーク
-      ctx.fillStyle = "#FFF"; ctx.font = "bold 20px Arial"; ctx.textAlign="center";
-      ctx.fillText("$", obs.x + obs.w/2, drawY + 45);
-    }
-    else {
-      ctx.fillStyle = "#E94560"; ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
-      ctx.fillStyle = "#FFF"; ctx.font = "10px Arial"; ctx.textAlign="center"; ctx.fillText(obs.type.toUpperCase(), obs.x + obs.w/2, obs.y + obs.h/2);
+      ctx.fillStyle = "#85bb65"; 
+      ctx.beginPath(); ctx.arc(cx, drawY + obs.w/2, obs.w/2, Math.PI, 0);
+      ctx.lineTo(obs.x + obs.w, drawY + obs.h); ctx.lineTo(obs.x + obs.w*0.75, drawY + obs.h-5);
+      ctx.lineTo(cx, drawY + obs.h); ctx.lineTo(obs.x + obs.w*0.25, drawY + obs.h-5);
+      ctx.lineTo(obs.x, drawY + obs.h); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(cx-10, drawY+20, 6, 0, Math.PI*2); ctx.arc(cx+10, drawY+20, 6, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#E94560"; ctx.beginPath(); ctx.arc(cx-10, drawY+20, 2, 0, Math.PI*2); ctx.arc(cx+10, drawY+20, 2, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#FFF"; ctx.font = "bold 20px Arial"; ctx.fillText("$", cx, drawY+45);
     }
   }
 
