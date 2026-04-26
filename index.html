@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>🏃‍♂️ BITCOIN RUN ⚡️</title>
 
-  <!-- 🚨 OGP (XやDiscordで大きな画像付きでシェアされる設定) -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ck121212195.github.io/Bitcoin-Run/">
   <meta property="og:site_name" content="BITCOIN RUN ⚡️">
@@ -13,14 +12,12 @@
   <meta property="og:description" content="縦でも横でも遊べる横スクロールアクション！Fiatモンスターを避けて無限のハイスコアを叩き出せ！">
   <meta property="og:image" content="https://ck121212195.github.io/Bitcoin-Run/og-image.jpg"> 
   
-  <!-- 🚨 X (Twitter) 用の個別設定 -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:domain" content="ck121212195.github.io">
   <meta name="twitter:title" content="BITCOIN RUN - 避けろFIAT！掴めSats！">
   <meta name="twitter:description" content="縦でも横でも遊べる横スクロールアクション！Fiatモンスターを避けて無限のハイスコアを叩き出せ！">
   <meta name="twitter:image" content="https://ck121212195.github.io/Bitcoin-Run/og-image.jpg"> 
 
- <!-- 🚨 ファビコン設定 -->
   <link rel="icon" type="image/png" href="favicon.png?v=2" sizes="32x32">
   <link rel="icon" type="image/png" href="favicon.png?v=2" sizes="192x192">
   <link rel="apple-touch-icon" sizes="180x180" href="favicon.png?v=2">
@@ -46,7 +43,7 @@
     .panel {
       background: rgba(0, 0, 0, 0.85); border: 3px solid var(--primary); border-radius: 12px;
       padding: 20px 15px; text-align: center; box-shadow: 0 0 20px rgba(247, 147, 26, 0.5);
-      width: 90%; max-width: 420px; position: absolute; z-index: 10; max-height: 90vh; overflow-y: auto;
+      width: 90%; max-width: 450px; position: absolute; z-index: 10; max-height: 90vh; overflow-y: auto;
     }
 
     .title { font-family: 'Press Start 2P', cursive; font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; line-height: 1.5; text-shadow: 2px 2px 0px #000; }
@@ -85,13 +82,13 @@
       </div>
 
       <div class="title" style="margin-top: 15px;">BITCOIN<br>RUN 🏃‍♂️</div>
-      <div class="desc" data-i18n="desc">縦でも横でもOK！<br>Fiatモンスターたちを華麗にかわし、無限のハイスコアを叩き出せ！</div>
+      <div class="desc" data-i18n="desc">縦でも横でもOK！<br>迫り来る敵を華麗にかわし、無限のハイスコアを叩き出せ！</div>
       
       <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: left; font-size: 9px; line-height: 1.8; color: #ddd; border: 1px solid #333;">
         <div style="color:var(--primary); font-weight:bold; margin-bottom: 5px; text-align:center;" data-i18n="howto_title">📖 HOW TO PLAY</div>
         <div data-i18n="howto_1">👆 画面タップ/クリックでジャンプ</div>
-        <div data-i18n="howto_2">🚀 空中で連続タップ【最大3段ジャンプ】</div>
-        <div data-i18n="howto_3">👿 FED, SCAM, CBDC, そしてトランプの米ドル攻撃を避けろ！</div>
+        <div data-i18n="howto_2">🚀 空中で連続タップ【最大5段ジャンプ】</div>
+        <div data-i18n="howto_3">👿 トランプやFEDに加え、ETH(キラー)、1万円札(ドッスン)、XRP(ノコノコ)が登場！</div>
         <div data-i18n="howto_4">⚡ 雷マークを取るとスコアボーナス</div>
       </div>
 
@@ -141,25 +138,24 @@
 
 <script>
 // ==========================================
-// 🚨 設定
+// 🚨 API設定
 // ==========================================
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzMnKAqkIJCYjumI_Z3eosxTYwwHA8jo0u_Au6YV-aFXhvrxkjJ48l0JrVNg-5qG4xz/exec"; 
 const LNBITS_API_URL = "https://demo.lnbits.com/api/v1/payments";
 const LNBITS_INVOICE_KEY = "67e5b0ad270f44d19e6d768bb3314e49"; 
 
-// 多言語辞書
 const i18n = {
   en: {
     desc: "Play in portrait or landscape!<br>Dodge villains and aim for an infinite high score!",
-    howto_title: "📖 HOW TO PLAY", howto_1: "👆 Tap/Click anywhere to JUMP", howto_2: "🚀 Tap in mid-air for TRIPLE JUMP!", howto_3: "👿 Dodge FED, SCAM, CBDC UFOs & TRUMP's USD!", howto_4: "⚡ Grab lightning to boost score",
+    howto_title: "📖 HOW TO PLAY", howto_1: "👆 Tap/Click anywhere to JUMP", howto_2: "🚀 Tap in mid-air for up to 5 JUMPS!", howto_3: "👿 Dodge TRUMP, FED, ETH(Bullet), 10K JPY(Thwomp) & XRP(Koopa)!", howto_4: "⚡ Grab lightning to boost score",
     btn_play_free: "PLAY FREE", gameover: "GAME OVER", btn_share: "🐦 SHARE TO X", btn_retry_free: "RETRY FREE",
     btn_leaderboard: "🏆 SAVE SCORE (100 SATS)", btn_view_lb: "📋 VIEW LEADERBOARD",
     pay_to_record: "PAY TO RECORD", waiting: "WAITING FOR PAYMENT...", btn_cancel: "CANCEL", btn_close: "CLOSE",
     payment_success: "SUCCESS!", enter_name: "Enter your name (Max 30):", btn_submit: "SUBMIT SCORE", alert_copy: "Copied!",
   },
   ja: {
-    desc: "縦でも横でもOK！<br>ヴィランを華麗にかわし、無限のハイスコアを叩き出せ！",
-    howto_title: "📖 遊び方", howto_1: "👆 画面タップ/クリックでジャンプ", howto_2: "🚀 空中で連続タップ【最大3段ジャンプ】", howto_3: "👿 FED, SCAM, CBDC、そしてトランプの米ドル攻撃を避けろ！", howto_4: "⚡ 雷マークを取るとスコアボーナス",
+    desc: "縦でも横でもOK！<br>迫り来る敵を華麗にかわし、無限のハイスコアを叩き出せ！",
+    howto_title: "📖 遊び方", howto_1: "👆 画面タップ/クリックでジャンプ", howto_2: "🚀 空中で連続タップ【最大5段ジャンプ】", howto_3: "👿 トランプやFEDに加え、ETH(キラー)、1万円札(ドッスン)、XRP(ノコノコ)が登場！", howto_4: "⚡ 雷マークを取るとスコアボーナス",
     btn_play_free: "無料でプレイ", gameover: "ゲームオーバー", btn_share: "🐦 𝕏でシェア", btn_retry_free: "もう一度プレイ",
     btn_leaderboard: "🏆 スコアを記録 (100 SATS)", btn_view_lb: "📋 ランキングを見る",
     pay_to_record: "100 Satsのお賽銭", waiting: "支払いを確認中...", btn_cancel: "キャンセル", btn_close: "閉じる",
@@ -167,7 +163,7 @@ const i18n = {
   },
   ko: {
     desc: "세로/가로 모두 가능!<br>악당을 피하고 무한 최고 점수에 도전하세요!",
-    howto_title: "📖 플레이 방법", howto_1: "👆 화면을 탭/클릭하여 점프", howto_2: "🚀 공중에서 연속 탭으로 【3단 점프】!", howto_3: "👿 은행(FED), 스캠, CBDC, 그리고 트럼프의 달러 공격을 피하세요!", howto_4: "⚡ 번개를 획득하여 점수 올리기",
+    howto_title: "📖 플레이 방법", howto_1: "👆 화면을 탭/클릭하여 점프", howto_2: "🚀 공중에서 연속 탭으로 【최대 5단 점프】!", howto_3: "👿 트럼프, FED, ETH(킬러), 1만엔(쿵쿵), XRP(엉금엉금)를 피하세요!", howto_4: "⚡ 번개를 획득하여 점수 올리기",
     btn_play_free: "무료로 플레이", gameover: "게임 오버", btn_share: "🐦 𝕏에 공유하기", btn_retry_free: "다시 플레이",
     btn_leaderboard: "🏆 점수 기록 (100 SATS)", btn_view_lb: "📋 랭킹 보기",
     pay_to_record: "결제하여 기록하기", waiting: "결제 대기 중...", btn_cancel: "취소", btn_close: "닫기",
@@ -241,13 +237,11 @@ function submitScore() {
     showLeaderboard();
     delete window[cbName]; document.body.removeChild(script);
   };
-  
   script.onerror = function() {
-    alert("Network Error. GASのURLが正しいか確認してください。");
+    alert("Network Error.");
     btn.disabled = false; btn.innerHTML = `<span data-i18n="btn_submit">${i18n[currentLang].btn_submit}</span>`;
     delete window[cbName]; document.body.removeChild(script);
   };
-
   script.src = `${GAS_URL}?action=record&name=${encodeURIComponent(name)}&score=${finalScore}&timeStr=${encodeURIComponent(timeStr)}&callback=${cbName}`;
   document.body.appendChild(script);
 }
@@ -274,12 +268,10 @@ function showLeaderboard() {
     document.getElementById('lb-list').innerHTML = html;
     delete window[cbName]; document.body.removeChild(script);
   };
-  
   script.onerror = function() {
     document.getElementById('lb-list').innerHTML = "Network Error.";
     delete window[cbName]; document.body.removeChild(script);
   };
-
   script.src = `${GAS_URL}?action=get&callback=${cbName}`;
   document.body.appendChild(script);
 }
@@ -293,17 +285,7 @@ function closeLeaderboard() {
 function shareTwitter() {
   const timeStr = document.getElementById('final-time').innerText;
   const finalScore = Math.floor(score);
-  
-  const text = `🏃‍♂️ BITCOIN RUN ⚡️
-Score: ${finalScore} / Time: ${timeStr}
-
-Dodge FED, SCAM & CBDC! 🇺🇸
-避けろFIAT！掴めSats！ 🇯🇵
-은행과 스캠을 피하세요! 🇰🇷
-
-Can you beat my score? 👇
-#Bitcoin #ビットコイン #비트코인 #LightningNetwork`;
-
+  const text = `🏃‍♂️ BITCOIN RUN ⚡️\nScore: ${finalScore} / Time: ${timeStr}\n\nDodge FED, SCAM & CBDC! 🇺🇸\n避けろFIAT！掴めSats！ 🇯🇵\n은행과 스캠을 피하세요! 🇰🇷\n\nCan you beat my score? 👇\n#Bitcoin #ビットコイン #비트코인 #LightningNetwork`;
   const appUrl = window.location.href.split('?')[0]; 
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(appUrl)}`, '_blank');
 }
@@ -324,13 +306,16 @@ function startGame() {
   document.getElementById('panel-leaderboard').style.display = 'none';
   canvas.style.display = 'block';
   
-  player = { x: 80, y: groundY - 20, r: 18, vy: 0, gravity: 0.5, jump: -8.5, jumpCount: 0, maxJumps: 3 };
+  // 🚨 修正: ジャンプ回数を5回に増強
+  player = { x: 80, y: groundY - 20, r: 18, vy: 0, gravity: 0.5, jump: -8.5, jumpCount: 0, maxJumps: 5 };
   obstacles =[]; items =[];
   
-  bgElements = { clouds:[], mountains:[], trees:[] };
-  for(let i=0; i<5; i++) bgElements.clouds.push({x: Math.random()*canvas.width, y: 50 + Math.random()*(canvas.height/3), w: 60 + Math.random()*40});
-  for(let i=0; i<3; i++) bgElements.mountains.push({x: i*300, y: groundY, w: 150 + Math.random()*100, h: 100 + Math.random()*80});
-  for(let i=0; i<4; i++) bgElements.trees.push({x: i*250, y: groundY});
+  // 🚨 背景のアップグレード (ビル群などを追加)
+  bgElements = { clouds:[], mountains:[], trees:[], cityscape:[] };
+  for(let i=0; i<6; i++) bgElements.clouds.push({x: Math.random()*canvas.width, y: 30 + Math.random()*(canvas.height/3), w: 60 + Math.random()*50});
+  for(let i=0; i<15; i++) bgElements.cityscape.push({x: i*60, w: 40 + Math.random()*30, h: 80 + Math.random()*100});
+  for(let i=0; i<4; i++) bgElements.mountains.push({x: i*250, y: groundY, w: 180 + Math.random()*100, h: 120 + Math.random()*80});
+  for(let i=0; i<5; i++) bgElements.trees.push({x: i*200, y: groundY});
 
   gameSpeed = 3.2; 
   score = 0; frame = 0; isGameOver = false;
@@ -370,19 +355,21 @@ function updateGame() {
   if (!isOverPit && player.y + player.r >= groundY) {
     player.y = groundY - player.r; player.vy = 0; player.jumpCount = 0; 
   }
-
   if (player.y - player.r > canvas.height) { gameOver(); return; }
 
   frame++;
-  let spawnRate = Math.max(80, 180 - Math.floor(gameSpeed * 10)); 
+  let spawnRate = Math.max(70, 160 - Math.floor(gameSpeed * 10)); 
   
   if (frame % spawnRate === 0) {
-    if (Math.random() < 0.2) {
+    if (Math.random() < 0.15) {
+      // 穴
       let w = 120 + Math.random() * 80;
       obstacles.push({ type: 'fiat_pit', x: canvas.width, y: groundY, w: w, h: 50 });
     } else {
-      const types =['banker', 'shitcoin', 'cbdc_ufo', 'trump'];
+      // 🚨 新キャラ追加
+      const types =['banker', 'shitcoin', 'cbdc_ufo', 'trump', 'ethereum', 'jpy_yen', 'ripple'];
       const type = types[Math.floor(Math.random() * types.length)];
+      
       if (type === 'cbdc_ufo') {
         let w = 60, h = 20; let flyY = groundY - 120 - Math.random() * 100; 
         obstacles.push({ type: type, x: canvas.width, y: flyY, w: w, h: h, base_y: flyY });
@@ -392,43 +379,63 @@ function updateGame() {
         let w = 40, h = 40; obstacles.push({ type: type, x: canvas.width, y: groundY - h - 10, w: w, h: h }); 
       } else if (type === 'trump') {
         let w = 50, h = 60; obstacles.push({ type: type, x: canvas.width, y: groundY - h, w: w, h: h, lastThrow: frame });
+      } else if (type === 'ethereum') {
+        // キラー：空中のランダムな高さからスポーン
+        let w = 30, h = 45; let flyY = groundY - 60 - Math.random() * 180;
+        obstacles.push({ type: type, x: canvas.width, y: flyY, w: w, h: h });
+      } else if (type === 'jpy_yen') {
+        // ドッスン：上空にスポーン
+        let w = 80, h = 40; 
+        obstacles.push({ type: type, x: canvas.width, y: 40 + Math.random() * 40, w: w, h: h, isFalling: false, vy: 0 });
+      } else if (type === 'ripple') {
+        // ノコノコ：地面にスポーン
+        let w = 36, h = 36;
+        obstacles.push({ type: type, x: canvas.width, y: groundY - h, w: w, h: h });
       }
     }
   }
 
   if (frame % 110 === 0) items.push({ x: canvas.width, y: groundY - 80 - Math.random() * 150, r: 15 });
 
-  bgElements.clouds.forEach(c => { c.x -= gameSpeed * 0.2; if(c.x + c.w < 0) { c.x = canvas.width + Math.random()*100; c.y = 50 + Math.random()*(canvas.height/3); } });
+  // 背景のパララックス（視差）スクロール
+  bgElements.clouds.forEach(c => { c.x -= gameSpeed * 0.15; if(c.x + c.w < 0) { c.x = canvas.width + Math.random()*100; c.y = 30 + Math.random()*(canvas.height/3); } });
+  bgElements.cityscape.forEach(b => { b.x -= gameSpeed * 0.05; if(b.x + b.w < 0) b.x = canvas.width + Math.random()*50; });
   bgElements.mountains.forEach(m => { m.x -= gameSpeed * 0.1; if(m.x + m.w < -100) m.x = canvas.width + Math.random()*200; });
   bgElements.trees.forEach(t => { t.x -= gameSpeed * 0.5; if(t.x < -50) t.x = canvas.width + Math.random()*100; });
 
-  // 障害物の更新ループ（ループ中に配列が追加される可能性があるので長さを固定）
   let currentLen = obstacles.length;
   for (let i = 0; i < currentLen; i++) {
     let obs = obstacles[i];
     
-    // Trumpの攻撃処理 (マリオのハンマーブロスのように米ドルを投げる)
+    // Trumpの攻撃処理 (ドル札投げ)
     if (obs.type === 'trump') {
       if (!obs.lastThrow) obs.lastThrow = frame;
-      if (frame - obs.lastThrow > 80) { // 80フレームに1回投げる
+      if (frame - obs.lastThrow > 80) { 
         obs.lastThrow = frame;
-        obstacles.push({ 
-          type: 'usd_bill', 
-          x: obs.x + 10, 
-          y: obs.y - 15, // 顔のあたりから投げる
-          w: 24, 
-          h: 12, 
-          vx: - (gameSpeed + 2.5), 
-          vy: -6, // 上方向に打ち上げる
-          gravity: 0.25 
-        });
+        obstacles.push({ type: 'usd_bill', x: obs.x + 10, y: obs.y - 15, w: 24, h: 12, vx: - (gameSpeed + 3), vy: -6, gravity: 0.25 });
       }
     }
 
+    // 🚨 新キャラの移動ロジック
     if (obs.type === 'usd_bill') {
-      obs.x += obs.vx;
-      obs.vy += obs.gravity;
-      obs.y += obs.vy;
+      obs.x += obs.vx; obs.vy += obs.gravity; obs.y += obs.vy;
+    } else if (obs.type === 'ethereum') {
+      // キラー (一直線に高速移動)
+      obs.x -= (gameSpeed + 4.5); 
+    } else if (obs.type === 'jpy_yen') {
+      // ドッスン (プレイヤーが下に近づいたら急降下)
+      obs.x -= gameSpeed;
+      if (!obs.isFalling && obs.x - player.x < 150 && obs.x - player.x > -50) {
+        obs.isFalling = true; obs.vy = 15;
+      }
+      if (obs.isFalling) {
+        obs.y += obs.vy;
+        if (obs.y > groundY - obs.h) { obs.y = groundY - obs.h; obs.vy = 0; } // 地面で止まる
+      }
+    } else if (obs.type === 'ripple') {
+      // ノコノコ (少し遅く、ぴょこぴょこ跳ねる)
+      obs.x -= (gameSpeed * 0.7);
+      obs.y = groundY - obs.h - Math.abs(Math.sin(frame * 0.1) * 8);
     } else {
       obs.x -= gameSpeed;
     }
@@ -441,7 +448,11 @@ function updateGame() {
       if (obs.type === 'usd_bill') {
         hitbox = { x: obs.x, y: obs.y, w: obs.w, h: obs.h };
       } else if (obs.type === 'trump') {
-        hitbox = { x: obs.x + 5, y: obs.y - 25, w: obs.w - 10, h: obs.h + 20 }; // 頭部を含める
+        hitbox = { x: obs.x + 5, y: obs.y - 25, w: obs.w - 10, h: obs.h + 20 }; 
+      } else if (obs.type === 'ethereum' || obs.type === 'ripple') {
+        hitbox = { x: obs.x + 5, y: obs.y + 5, w: obs.w - 10, h: obs.h - 10 };
+      } else if (obs.type === 'jpy_yen') {
+        hitbox = { x: obs.x + 5, y: obs.y + 5, w: obs.w - 10, h: obs.h - 5 };
       } else {
         hitbox = { x: obs.x + 10, y: obs.y + 10, w: obs.w - 20, h: obs.h - 15 };
       }
@@ -472,34 +483,65 @@ function circleRectCollide(circle, rect) {
 }
 
 function drawGame() {
+  // 🚨 背景：リアルで綺麗な夕焼けグラデーション空
   let gSky = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  gSky.addColorStop(0, "#2980b9"); gSky.addColorStop(1, "#6dd5ed");
+  gSky.addColorStop(0, "#1a2a6c"); // ダークブルー
+  gSky.addColorStop(0.5, "#b21f1f"); // レッドパープル
+  gSky.addColorStop(1, "#fdbb2d"); // オレンジイエロー
   ctx.fillStyle = gSky; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#898989";
-  for(let m of bgElements.mountains) {
-    ctx.beginPath(); ctx.moveTo(m.x, groundY); ctx.lineTo(m.x + m.w/2, groundY - m.h); ctx.lineTo(m.x + m.w, groundY); ctx.fill();
-    ctx.fillStyle = "#FFF"; ctx.beginPath(); ctx.moveTo(m.x + m.w/2, groundY - m.h); ctx.lineTo(m.x + m.w/2 + 20, groundY - m.h + 30); ctx.lineTo(m.x + m.w/2 - 20, groundY - m.h + 30); ctx.fill();
-    ctx.fillStyle = "#898989"; 
+  // 輝く太陽
+  ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+  ctx.beginPath(); ctx.arc(canvas.width * 0.75, canvas.height * 0.45, 45, 0, Math.PI*2);
+  ctx.shadowBlur = 40; ctx.shadowColor = "#fdbb2d"; ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // 遠景のビル群 (シルエット)
+  ctx.fillStyle = "#1e152a";
+  for(let b of bgElements.cityscape) {
+    ctx.fillRect(b.x, groundY - b.h, b.w, b.h);
+    // 窓の明かり
+    ctx.fillStyle = "rgba(255, 220, 100, 0.4)";
+    if (b.w > 20) {
+      ctx.fillRect(b.x + 5, groundY - b.h + 10, 4, 6);
+      ctx.fillRect(b.x + 15, groundY - b.h + 25, 4, 6);
+    }
+    ctx.fillStyle = "#1e152a"; // 色戻す
   }
 
-  ctx.fillStyle = "#FFF";
+  // 山 (グラデーション)
+  for(let m of bgElements.mountains) {
+    let gMount = ctx.createLinearGradient(m.x, groundY - m.h, m.x, groundY);
+    gMount.addColorStop(0, "#3a2a45"); gMount.addColorStop(1, "#111");
+    ctx.fillStyle = gMount;
+    ctx.beginPath(); ctx.moveTo(m.x, groundY); ctx.lineTo(m.x + m.w/2, groundY - m.h); ctx.lineTo(m.x + m.w, groundY); ctx.fill();
+    // 雪・光の反射
+    ctx.fillStyle = "rgba(255,150,150,0.2)"; 
+    ctx.beginPath(); ctx.moveTo(m.x + m.w/2, groundY - m.h); ctx.lineTo(m.x + m.w/2 + 20, groundY - m.h + 30); ctx.lineTo(m.x + m.w/2 - 20, groundY - m.h + 30); ctx.fill();
+  }
+
+  // 雲 (夕焼けに染まる)
+  ctx.fillStyle = "rgba(255, 200, 200, 0.7)";
   for(let c of bgElements.clouds) {
     ctx.beginPath(); ctx.arc(c.x, c.y, c.w/2, 0, Math.PI*2); ctx.arc(c.x + c.w/2, c.y + 10, c.w/2.5, 0, Math.PI*2); ctx.arc(c.x - c.w/2, c.y + 10, c.w/2.5, 0, Math.PI*2); ctx.fill();
   }
 
+  // 木
   for(let t of bgElements.trees) {
-    ctx.fillStyle = "#8B5A2B"; ctx.fillRect(t.x - 5, groundY - 20, 10, 20); 
-    ctx.fillStyle = "#55C936"; ctx.beginPath(); ctx.arc(t.x, groundY - 30, 25, 0, Math.PI*2); ctx.fill(); 
+    ctx.fillStyle = "#2d1b11"; ctx.fillRect(t.x - 5, groundY - 20, 10, 20); 
+    ctx.fillStyle = "#144520"; ctx.beginPath(); ctx.arc(t.x, groundY - 30, 25, 0, Math.PI*2); ctx.fill(); 
   }
 
-  ctx.fillStyle = "#55C936"; ctx.fillRect(0, groundY, canvas.width, 10); 
-  ctx.fillStyle = "#8B5A2B"; ctx.fillRect(0, groundY + 10, canvas.width, 40); 
+  // 地面
+  let gGround = ctx.createLinearGradient(0, groundY, 0, canvas.height);
+  gGround.addColorStop(0, "#2ecc71"); gGround.addColorStop(1, "#27ae60");
+  ctx.fillStyle = gGround; ctx.fillRect(0, groundY, canvas.width, 10); 
+  ctx.fillStyle = "#3e2723"; ctx.fillRect(0, groundY + 10, canvas.width, 40); 
 
   for (let obs of obstacles) {
     if (obs.type === 'fiat_pit') {
       let gPit = ctx.createLinearGradient(obs.x, groundY, obs.x, canvas.height);
-      gPit.addColorStop(0, "#27ae60"); gPit.addColorStop(1, "#111"); 
+      gPit.addColorStop(0, "#111"); gPit.addColorStop(1, "#000"); 
       ctx.fillStyle = gPit;
       ctx.beginPath(); ctx.moveTo(obs.x, canvas.height); ctx.lineTo(obs.x, groundY + 10);
       for (let px = 0; px <= obs.w; px += 10) {
@@ -507,7 +549,7 @@ function drawGame() {
         ctx.lineTo(obs.x + px, py);
       }
       ctx.lineTo(obs.x + obs.w, canvas.height); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = "rgba(0,0,0,0.6)"; ctx.font = "bold 16px 'Press Start 2P'"; ctx.textAlign="center"; 
+      ctx.fillStyle = "rgba(255,50,50,0.6)"; ctx.font = "bold 16px 'Press Start 2P'"; ctx.textAlign="center"; 
       ctx.fillText("FIAT", obs.x + obs.w/2, groundY + 35);
     }
   }
@@ -551,43 +593,51 @@ function drawGame() {
       ctx.fillStyle = "rgba(41, 128, 185, 0.8)"; ctx.beginPath(); ctx.ellipse(cx, cy - 5, obs.w/4, obs.h/3, 0, 0, Math.PI*2); ctx.fill();
       ctx.fillStyle = "#FFF"; ctx.font = "bold 10px Arial"; ctx.fillText("CBDC", cx, cy + 4);
     }
-    // 🚨 トランプ大統領の描画
     else if (obs.type === 'trump') {
-      // 体（青いスーツ）
       let gTrump = ctx.createLinearGradient(obs.x, obs.y, obs.x + obs.w, obs.y);
       gTrump.addColorStop(0, "#2980b9"); gTrump.addColorStop(1, "#3498db");
       ctx.fillStyle = gTrump; ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
-      
-      // 赤いネクタイ
-      ctx.fillStyle = "#e74c3c"; ctx.beginPath();
-      ctx.moveTo(cx - 5, obs.y); ctx.lineTo(cx + 5, obs.y); ctx.lineTo(cx, obs.y + 35); ctx.fill();
-      
-      // 顔（肌色〜オレンジ）
+      ctx.fillStyle = "#e74c3c"; ctx.beginPath(); ctx.moveTo(cx - 5, obs.y); ctx.lineTo(cx + 5, obs.y); ctx.lineTo(cx, obs.y + 35); ctx.fill();
       ctx.fillStyle = "#f39c12"; ctx.beginPath(); ctx.arc(cx, obs.y - 15, 18, 0, Math.PI*2); ctx.fill();
-      
-      // 金髪ヘアスタイル
-      ctx.fillStyle = "#f1c40f"; ctx.beginPath();
-      ctx.arc(cx, obs.y - 25, 20, Math.PI, 0); ctx.fill();
-      ctx.fillRect(cx - 20, obs.y - 28, 40, 10);
-      ctx.fillRect(cx + 8, obs.y - 28, 12, 18); // 横に流す髪
-      
+      ctx.fillStyle = "#f1c40f"; ctx.beginPath(); ctx.arc(cx, obs.y - 25, 20, Math.PI, 0); ctx.fill();
+      ctx.fillRect(cx - 20, obs.y - 28, 40, 10); ctx.fillRect(cx + 8, obs.y - 28, 12, 18); 
       ctx.fillStyle = "#FFF"; ctx.font = "bold 10px Arial"; ctx.textAlign = "center"; ctx.textBaseline="alphabetic";
       ctx.fillText("TRUMP", cx, obs.y + obs.h - 5);
     }
-    // 🚨 米ドル札（投げる弾）の描画
     else if (obs.type === 'usd_bill') {
-      ctx.save();
-      ctx.translate(obs.x + obs.w/2, obs.y + obs.h/2);
-      ctx.rotate(-frame * 0.15); // 回転しながら飛んでくる
-      
-      ctx.fillStyle = "#2ecc71"; // 緑色のお札
-      ctx.fillRect(-obs.w/2, -obs.h/2, obs.w, obs.h);
-      ctx.strokeStyle = "#145a32"; ctx.lineWidth = 2;
-      ctx.strokeRect(-obs.w/2, -obs.h/2, obs.w, obs.h);
-      
-      ctx.fillStyle = "#FFF"; ctx.font = "bold 12px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillText("$", 0, 0);
+      ctx.save(); ctx.translate(obs.x + obs.w/2, obs.y + obs.h/2); ctx.rotate(-frame * 0.15); 
+      ctx.fillStyle = "#2ecc71"; ctx.fillRect(-obs.w/2, -obs.h/2, obs.w, obs.h);
+      ctx.strokeStyle = "#145a32"; ctx.lineWidth = 2; ctx.strokeRect(-obs.w/2, -obs.h/2, obs.w, obs.h);
+      ctx.fillStyle = "#FFF"; ctx.font = "bold 12px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("$", 0, 0);
       ctx.restore();
+    }
+    // 🚨 新規: イーサリアム (キラー)
+    else if (obs.type === 'ethereum') {
+      ctx.fillStyle = "#627eea"; ctx.beginPath();
+      ctx.moveTo(cx, obs.y); ctx.lineTo(obs.x + obs.w, cy); ctx.lineTo(cx, obs.y + obs.h); ctx.lineTo(obs.x, cy); ctx.fill();
+      ctx.fillStyle = "rgba(0,0,0,0.2)"; ctx.beginPath();
+      ctx.moveTo(cx, obs.y); ctx.lineTo(obs.x + obs.w, cy); ctx.lineTo(cx, obs.y + obs.h); ctx.fill();
+      ctx.fillStyle = "#FFF"; ctx.font = "bold 10px Arial"; ctx.textAlign = "center"; ctx.textBaseline="middle"; ctx.fillText("ETH", cx, cy + 3);
+    }
+    // 🚨 新規: 一万円札 (ドッスン)
+    else if (obs.type === 'jpy_yen') {
+      ctx.fillStyle = "#dcd7b4"; ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+      ctx.strokeStyle = "#5a6650"; ctx.lineWidth = 2; ctx.strokeRect(obs.x, obs.y, obs.w, obs.h);
+      // ドッスンの怒り目
+      ctx.fillStyle = "#000";
+      ctx.beginPath(); ctx.moveTo(obs.x+15, obs.y+10); ctx.lineTo(obs.x+35, obs.y+18); ctx.lineTo(obs.x+20, obs.y+22); ctx.fill(); // 左目
+      ctx.beginPath(); ctx.moveTo(obs.x+obs.w-15, obs.y+10); ctx.lineTo(obs.x+obs.w-35, obs.y+18); ctx.lineTo(obs.x+obs.w-20, obs.y+22); ctx.fill(); // 右目
+      ctx.fillStyle = "#5a6650"; ctx.font = "bold 12px Arial"; ctx.textAlign="center"; ctx.textBaseline="bottom";
+      ctx.fillText("¥10000", cx, obs.y + obs.h - 2);
+    }
+    // 🚨 新規: リップル (ノコノコ)
+    else if (obs.type === 'ripple') {
+      ctx.fillStyle = "#008ece"; ctx.beginPath(); ctx.arc(cx, cy, obs.w/2, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#FFF"; 
+      ctx.beginPath(); ctx.arc(cx - 5, cy - 2, 2.5, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx + 5, cy - 2, 2.5, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx, cy + 6, 2.5, 0, Math.PI*2); ctx.fill();
+      ctx.font = "bold 9px Arial"; ctx.textAlign = "center"; ctx.textBaseline="bottom"; ctx.fillText("XRP", cx, cy - 10);
     }
   }
 
