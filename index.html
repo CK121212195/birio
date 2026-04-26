@@ -5,23 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>🏃‍♂️ BITCOIN RUN ⚡️</title>
 
-  <!-- 🚨 追加: OGP (XやDiscordで大きな画像付きでシェアされる設定) -->
+  <!-- 🚨 OGP (XやDiscordで大きな画像付きでシェアされる設定) -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ck121212195.github.io/Bitcoin-Run/">
   <meta property="og:site_name" content="BITCOIN RUN ⚡️">
   <meta property="og:title" content="BITCOIN RUN - 避けろFIAT！掴めSats！">
   <meta property="og:description" content="縦でも横でも遊べる横スクロールアクション！Fiatモンスターを避けて無限のハイスコアを叩き出せ！">
-  <meta property="og:image" content="https://ck121212195.github.io/Bitcoin-Run/og-image.jpg"> <!-- 共有用画像のURLを指定 -->
+  <meta property="og:image" content="https://ck121212195.github.io/Bitcoin-Run/og-image.jpg"> 
   
-  <!-- 🚨 追加: X (Twitter) 用の個別設定 -->
+  <!-- 🚨 X (Twitter) 用の個別設定 -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:domain" content="ck121212195.github.io">
   <meta name="twitter:title" content="BITCOIN RUN - 避けろFIAT！掴めSats！">
   <meta name="twitter:description" content="縦でも横でも遊べる横スクロールアクション！Fiatモンスターを避けて無限のハイスコアを叩き出せ！">
-  <meta name="twitter:image" content="https://ck121212195.github.io/Bitcoin-Run/og-image.jpg"> <!-- X用の画像指定 -->
- 
+  <meta name="twitter:image" content="https://ck121212195.github.io/Bitcoin-Run/og-image.jpg"> 
 
- <!-- 🚨 追加: ファビコン設定 -->
+ <!-- 🚨 ファビコン設定 -->
   <link rel="icon" type="image/png" href="favicon.png?v=2" sizes="32x32">
   <link rel="icon" type="image/png" href="favicon.png?v=2" sizes="192x192">
   <link rel="apple-touch-icon" sizes="180x180" href="favicon.png?v=2">
@@ -92,7 +91,7 @@
         <div style="color:var(--primary); font-weight:bold; margin-bottom: 5px; text-align:center;" data-i18n="howto_title">📖 HOW TO PLAY</div>
         <div data-i18n="howto_1">👆 画面タップ/クリックでジャンプ</div>
         <div data-i18n="howto_2">🚀 空中で連続タップ【最大3段ジャンプ】</div>
-        <div data-i18n="howto_3">👿 中央銀行(FED), SCAM, CBDC, FIATを避けろ！</div>
+        <div data-i18n="howto_3">👿 FED, SCAM, CBDC, そしてトランプの米ドル攻撃を避けろ！</div>
         <div data-i18n="howto_4">⚡ 雷マークを取るとスコアボーナス</div>
       </div>
 
@@ -142,46 +141,37 @@
 
 <script>
 // ==========================================
-// 🚨 設定 (必ず /exec で終わるURLにしてください！)
+// 🚨 設定
 // ==========================================
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzMnKAqkIJCYjumI_Z3eosxTYwwHA8jo0u_Au6YV-aFXhvrxkjJ48l0JrVNg-5qG4xz/exec"; 
 const LNBITS_API_URL = "https://demo.lnbits.com/api/v1/payments";
 const LNBITS_INVOICE_KEY = "67e5b0ad270f44d19e6d768bb3314e49"; 
 
-const shareGifs =[
-  "https://media.giphy.com/media/trN9ht5RlE3Dcwavg2/giphy.gif",
-  "https://media.giphy.com/media/7FBY7h5Psqd20/giphy.gif",
-  "https://media.giphy.com/media/5efT8LI3xGIG4/giphy.gif"
-];
-
 // 多言語辞書
 const i18n = {
   en: {
     desc: "Play in portrait or landscape!<br>Dodge villains and aim for an infinite high score!",
-    howto_title: "📖 HOW TO PLAY", howto_1: "👆 Tap/Click anywhere to JUMP", howto_2: "🚀 Tap in mid-air for TRIPLE JUMP!", howto_3: "👿 Dodge FED, SCAM, CBDC UFOs & FIAT", howto_4: "⚡ Grab lightning to boost score",
+    howto_title: "📖 HOW TO PLAY", howto_1: "👆 Tap/Click anywhere to JUMP", howto_2: "🚀 Tap in mid-air for TRIPLE JUMP!", howto_3: "👿 Dodge FED, SCAM, CBDC UFOs & TRUMP's USD!", howto_4: "⚡ Grab lightning to boost score",
     btn_play_free: "PLAY FREE", gameover: "GAME OVER", btn_share: "🐦 SHARE TO X", btn_retry_free: "RETRY FREE",
     btn_leaderboard: "🏆 SAVE SCORE (100 SATS)", btn_view_lb: "📋 VIEW LEADERBOARD",
     pay_to_record: "PAY TO RECORD", waiting: "WAITING FOR PAYMENT...", btn_cancel: "CANCEL", btn_close: "CLOSE",
     payment_success: "SUCCESS!", enter_name: "Enter your name (Max 30):", btn_submit: "SUBMIT SCORE", alert_copy: "Copied!",
-    share_text: "I survived for {time} and scored {score} points in BITCOIN RUN! 🏃‍♂️⚡️\nI'm dodging FED, SCAM coins & CBDC UFOs!\nCan you beat my score? 👇\n#Bitcoin #LightningNetwork"
   },
   ja: {
     desc: "縦でも横でもOK！<br>ヴィランを華麗にかわし、無限のハイスコアを叩き出せ！",
-    howto_title: "📖 遊び方", howto_1: "👆 画面タップ/クリックでジャンプ", howto_2: "🚀 空中で連続タップ【最大3段ジャンプ】", howto_3: "👿 中央銀行(FED), SCAM, CBDC, FIATを避けろ！", howto_4: "⚡ 雷マークを取るとスコアボーナス",
+    howto_title: "📖 遊び方", howto_1: "👆 画面タップ/クリックでジャンプ", howto_2: "🚀 空中で連続タップ【最大3段ジャンプ】", howto_3: "👿 FED, SCAM, CBDC、そしてトランプの米ドル攻撃を避けろ！", howto_4: "⚡ 雷マークを取るとスコアボーナス",
     btn_play_free: "無料でプレイ", gameover: "ゲームオーバー", btn_share: "🐦 𝕏でシェア", btn_retry_free: "もう一度プレイ",
     btn_leaderboard: "🏆 スコアを記録 (100 SATS)", btn_view_lb: "📋 ランキングを見る",
     pay_to_record: "100 Satsのお賽銭", waiting: "支払いを確認中...", btn_cancel: "キャンセル", btn_close: "閉じる",
     payment_success: "支払い完了！", enter_name: "名前を入力してください:", btn_submit: "記録する", alert_copy: "コピーしました！",
-    share_text: "BITCOIN RUNで【{time}】生き残り、スコア【{score}】を叩き出したよ！🏃‍♂️⚡️\n中央銀行やSCAMコイン、CBDCのUFOを避けまくれ！🛸\n君は僕を超えられるか？👇\n#Bitcoin #LightningNetwork"
   },
   ko: {
     desc: "세로/가로 모두 가능!<br>악당을 피하고 무한 최고 점수에 도전하세요!",
-    howto_title: "📖 플레이 방법", howto_1: "👆 화면을 탭/클릭하여 점프", howto_2: "🚀 공중에서 연속 탭으로 【3단 점프】!", howto_3: "👿 은행(FED), 스캠, CBDC, FIAT 늪을 피하세요!", howto_4: "⚡ 번개를 획득하여 점수 올리기",
+    howto_title: "📖 플레이 방법", howto_1: "👆 화면을 탭/클릭하여 점프", howto_2: "🚀 공중에서 연속 탭으로 【3단 점프】!", howto_3: "👿 은행(FED), 스캠, CBDC, 그리고 트럼프의 달러 공격을 피하세요!", howto_4: "⚡ 번개를 획득하여 점수 올리기",
     btn_play_free: "무료로 플레이", gameover: "게임 오버", btn_share: "🐦 𝕏에 공유하기", btn_retry_free: "다시 플레이",
     btn_leaderboard: "🏆 점수 기록 (100 SATS)", btn_view_lb: "📋 랭킹 보기",
     pay_to_record: "결제하여 기록하기", waiting: "결제 대기 중...", btn_cancel: "취소", btn_close: "닫기",
     payment_success: "결제 완료!", enter_name: "이름을 입력하세요:", btn_submit: "등록하기", alert_copy: "복사되었습니다!",
-    share_text: "BITCOIN RUN에서 【{time}】 동안 살아남아 【{score}】 점을 기록했습니다! 🏃‍♂️⚡️\n은행, 스캠 코인, CBDC UFO를 피해 달리세요! 🛸\n저를 뛰어넘을 수 있나요? 👇\n#Bitcoin #LightningNetwork"
   }
 };
 
@@ -234,7 +224,6 @@ function pollPayment(hash) {
 function copyLbInvoice() { document.getElementById('lb-inv-text').select(); document.execCommand('copy'); alert(i18n[currentLang].alert_copy); }
 function cancelLbPay() { if(checkPaymentInterval) clearInterval(checkPaymentInterval); document.getElementById('lb-invoice-area').style.display = 'none'; document.getElementById('result-buttons').style.display = 'block'; }
 
-// 🚨 修正: 最強のCORS回避手段「JSONP」通信でGASに送信する
 function submitScore() {
   const name = document.getElementById('player-name').value.trim() || 'Anon';
   const timeStr = document.getElementById('final-time').innerText;
@@ -263,7 +252,6 @@ function submitScore() {
   document.body.appendChild(script);
 }
 
-// 🚨 JSONPでランキングを取得
 function showLeaderboard() {
   document.getElementById('panel-result').style.display = 'none'; document.getElementById('panel-start').style.display = 'none'; document.getElementById('panel-leaderboard').style.display = 'block';
   document.getElementById('lb-list').innerHTML = "Loading...";
@@ -306,8 +294,6 @@ function shareTwitter() {
   const timeStr = document.getElementById('final-time').innerText;
   const finalScore = Math.floor(score);
   
-  // 🚨 修正1: 世界中へアピールするため、英語・日本語・韓国語をミックス！
-  // ハッシュタグも各言語のものを盛り込みました。
   const text = `🏃‍♂️ BITCOIN RUN ⚡️
 Score: ${finalScore} / Time: ${timeStr}
 
@@ -319,9 +305,6 @@ Can you beat my score? 👇
 #Bitcoin #ビットコイン #비트코인 #LightningNetwork`;
 
   const appUrl = window.location.href.split('?')[0]; 
-  
-  // 🚨 修正2: GIFの追加(randomGif)を削除し、ゲームのURLのみにする。
-  // これにより、Twitter側で確実に「OGP画像（大きなサムネイル）」が展開されます。
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(appUrl)}`, '_blank');
 }
 
@@ -398,7 +381,7 @@ function updateGame() {
       let w = 120 + Math.random() * 80;
       obstacles.push({ type: 'fiat_pit', x: canvas.width, y: groundY, w: w, h: 50 });
     } else {
-      const types =['banker', 'shitcoin', 'cbdc_ufo'];
+      const types =['banker', 'shitcoin', 'cbdc_ufo', 'trump'];
       const type = types[Math.floor(Math.random() * types.length)];
       if (type === 'cbdc_ufo') {
         let w = 60, h = 20; let flyY = groundY - 120 - Math.random() * 100; 
@@ -407,6 +390,8 @@ function updateGame() {
         let w = 50, h = 70; obstacles.push({ type: type, x: canvas.width, y: groundY - h, w: w, h: h });
       } else if (type === 'shitcoin') {
         let w = 40, h = 40; obstacles.push({ type: type, x: canvas.width, y: groundY - h - 10, w: w, h: h }); 
+      } else if (type === 'trump') {
+        let w = 50, h = 60; obstacles.push({ type: type, x: canvas.width, y: groundY - h, w: w, h: h, lastThrow: frame });
       }
     }
   }
@@ -417,12 +402,49 @@ function updateGame() {
   bgElements.mountains.forEach(m => { m.x -= gameSpeed * 0.1; if(m.x + m.w < -100) m.x = canvas.width + Math.random()*200; });
   bgElements.trees.forEach(t => { t.x -= gameSpeed * 0.5; if(t.x < -50) t.x = canvas.width + Math.random()*100; });
 
-  for (let i = 0; i < obstacles.length; i++) {
+  // 障害物の更新ループ（ループ中に配列が追加される可能性があるので長さを固定）
+  let currentLen = obstacles.length;
+  for (let i = 0; i < currentLen; i++) {
     let obs = obstacles[i];
-    obs.x -= gameSpeed;
+    
+    // Trumpの攻撃処理 (マリオのハンマーブロスのように米ドルを投げる)
+    if (obs.type === 'trump') {
+      if (!obs.lastThrow) obs.lastThrow = frame;
+      if (frame - obs.lastThrow > 80) { // 80フレームに1回投げる
+        obs.lastThrow = frame;
+        obstacles.push({ 
+          type: 'usd_bill', 
+          x: obs.x + 10, 
+          y: obs.y - 15, // 顔のあたりから投げる
+          w: 24, 
+          h: 12, 
+          vx: - (gameSpeed + 2.5), 
+          vy: -6, // 上方向に打ち上げる
+          gravity: 0.25 
+        });
+      }
+    }
+
+    if (obs.type === 'usd_bill') {
+      obs.x += obs.vx;
+      obs.vy += obs.gravity;
+      obs.y += obs.vy;
+    } else {
+      obs.x -= gameSpeed;
+    }
+
     if (obs.type === 'cbdc_ufo') { obs.y = obs.base_y + Math.sin(frame * 0.1 + obs.x * 0.05) * 20; }
+    
+    // 当たり判定
     if (obs.type !== 'fiat_pit') {
-      let hitbox = { x: obs.x + 10, y: obs.y + 10, w: obs.w - 20, h: obs.h - 15 };
+      let hitbox;
+      if (obs.type === 'usd_bill') {
+        hitbox = { x: obs.x, y: obs.y, w: obs.w, h: obs.h };
+      } else if (obs.type === 'trump') {
+        hitbox = { x: obs.x + 5, y: obs.y - 25, w: obs.w - 10, h: obs.h + 20 }; // 頭部を含める
+      } else {
+        hitbox = { x: obs.x + 10, y: obs.y + 10, w: obs.w - 20, h: obs.h - 15 };
+      }
       if (circleRectCollide(player, hitbox)) { gameOver(); return; }
     }
   }
@@ -528,6 +550,44 @@ function drawGame() {
       ctx.fillStyle = gUFO; ctx.beginPath(); ctx.ellipse(cx, cy, obs.w/2, obs.h/2, 0, 0, Math.PI*2); ctx.fill();
       ctx.fillStyle = "rgba(41, 128, 185, 0.8)"; ctx.beginPath(); ctx.ellipse(cx, cy - 5, obs.w/4, obs.h/3, 0, 0, Math.PI*2); ctx.fill();
       ctx.fillStyle = "#FFF"; ctx.font = "bold 10px Arial"; ctx.fillText("CBDC", cx, cy + 4);
+    }
+    // 🚨 トランプ大統領の描画
+    else if (obs.type === 'trump') {
+      // 体（青いスーツ）
+      let gTrump = ctx.createLinearGradient(obs.x, obs.y, obs.x + obs.w, obs.y);
+      gTrump.addColorStop(0, "#2980b9"); gTrump.addColorStop(1, "#3498db");
+      ctx.fillStyle = gTrump; ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+      
+      // 赤いネクタイ
+      ctx.fillStyle = "#e74c3c"; ctx.beginPath();
+      ctx.moveTo(cx - 5, obs.y); ctx.lineTo(cx + 5, obs.y); ctx.lineTo(cx, obs.y + 35); ctx.fill();
+      
+      // 顔（肌色〜オレンジ）
+      ctx.fillStyle = "#f39c12"; ctx.beginPath(); ctx.arc(cx, obs.y - 15, 18, 0, Math.PI*2); ctx.fill();
+      
+      // 金髪ヘアスタイル
+      ctx.fillStyle = "#f1c40f"; ctx.beginPath();
+      ctx.arc(cx, obs.y - 25, 20, Math.PI, 0); ctx.fill();
+      ctx.fillRect(cx - 20, obs.y - 28, 40, 10);
+      ctx.fillRect(cx + 8, obs.y - 28, 12, 18); // 横に流す髪
+      
+      ctx.fillStyle = "#FFF"; ctx.font = "bold 10px Arial"; ctx.textAlign = "center"; ctx.textBaseline="alphabetic";
+      ctx.fillText("TRUMP", cx, obs.y + obs.h - 5);
+    }
+    // 🚨 米ドル札（投げる弾）の描画
+    else if (obs.type === 'usd_bill') {
+      ctx.save();
+      ctx.translate(obs.x + obs.w/2, obs.y + obs.h/2);
+      ctx.rotate(-frame * 0.15); // 回転しながら飛んでくる
+      
+      ctx.fillStyle = "#2ecc71"; // 緑色のお札
+      ctx.fillRect(-obs.w/2, -obs.h/2, obs.w, obs.h);
+      ctx.strokeStyle = "#145a32"; ctx.lineWidth = 2;
+      ctx.strokeRect(-obs.w/2, -obs.h/2, obs.w, obs.h);
+      
+      ctx.fillStyle = "#FFF"; ctx.font = "bold 12px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText("$", 0, 0);
+      ctx.restore();
     }
   }
 
